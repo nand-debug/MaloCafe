@@ -52,19 +52,23 @@ if (bookingForm) {
     if (botcheck && botcheck.value !== "") return;
 
     // 📦 GET FORM DATA
-    const data = {
-      name: document.getElementById("name").value,
-      email: document.getElementById("email").value,
-      phone: document.getElementById("phone").value,
-      guests: parseInt(document.getElementById("guests").value),
-      date: document.getElementById("date").value,
-      time: document.getElementById("time").value,
-      requests: document.getElementById("requests").value
-    };
+      const data = {
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    phone: document.getElementById("phone").value,
+    guests: parseInt(document.getElementById("guests").value),
+    date: document.getElementById("date").value,
+    time: document.getElementById("time").value,
+    requests: document.getElementById("requests").value,
+    botcheck: document.getElementById("botcheck").value
+  };
 
     try {
-      const res = await fetch("https://script.google.com/macros/s/AKfycbzJyKCwEjqXz_vD8VsOcvRtpzrSHPuOVpGAMRgskJV_p1UGUlaZeVB7H78Kd5bj6Ho/exec", {
+      const res = await fetch("https://script.google.com/macros/s/AKfycbwE4mHJK3j5KrIDWLkp_S_c_yJHqY38tE9BS4HbVXRt5VYak7Yy84Xk2E7Jd1xnnZ5n/exec", {
         method: "POST",
+        headers: {
+        "Content-Type": "application/json"
+      },
         body: JSON.stringify(data)
       });
 
@@ -83,7 +87,7 @@ if (bookingForm) {
     } catch (err) {
       console.error("Fetch error:", err);
 
-      // ⚠️ FALLBACK (VERY IMPORTANT)
+      // ⚠️ FALLBACK 
       alert("Booking submitted! If unsure, please check with the cafe.");
       
       bookingContainer.style.display = 'none';
