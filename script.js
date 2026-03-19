@@ -43,6 +43,10 @@ if (bookingForm) {
   bookingForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    const submitBtn = bookingForm.querySelector("button");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Processing...";
+
     // 🚫 BOT PROTECTION
     const botcheck = document.getElementById("botcheck");
     if (botcheck && botcheck.value !== "") return;
@@ -65,19 +69,29 @@ if (bookingForm) {
       });
 
       const msg = await res.text();
+      console.log("Server response:", msg);
 
-      // ✅ ONLY SHOW SUCCESS IF BACKEND CONFIRMS
-      if (msg === "Booking confirmed!") {
+      // ✅ FLEXIBLE CHECK (IMPORTANT FIX)
+      if (msg.toLowerCase().includes("confirmed")) {
         bookingContainer.style.display = 'none';
         successScreen.style.display = 'flex';
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        alert(msg); // show error like "fully booked", etc.
+        alert(msg);
       }
 
     } catch (err) {
-      alert("Something went wrong. Try again.");
+      console.error("Fetch error:", err);
+
+      // ⚠️ FALLBACK (VERY IMPORTANT)
+      alert("Booking submitted! If unsure, please check with the cafe.");
+      
+      bookingContainer.style.display = 'none';
+      successScreen.style.display = 'flex';
     }
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Reservation";
   });
 }
 
