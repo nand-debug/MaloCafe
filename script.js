@@ -1,7 +1,17 @@
-// ===== NAVBAR SCROLL =====
-const navbar = document.querySelector('.navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 20);
+
+document.addEventListener('DOMContentLoaded', function () {
+  const navbar = document.querySelector('.navbar');
+
+  // Only apply on home page
+  if (document.body.classList.contains('home-page')) {
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 10) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  }
 });
 
 // ===== MOBILE MENU =====
@@ -49,8 +59,11 @@ if (bookingForm) {
 
     // 🚫 BOT PROTECTION
     const botcheck = document.getElementById("botcheck");
-    if (botcheck && botcheck.value !== "") return;
-
+    if (botcheck && botcheck.value !== "") {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Reservation";
+    return;
+  }
     // 📦 GET FORM DATA
       const data = {
     name: document.getElementById("name").value,
@@ -64,13 +77,10 @@ if (bookingForm) {
   };
 
     try {
-      const res = await fetch("https://script.google.com/macros/s/AKfycbwE4mHJK3j5KrIDWLkp_S_c_yJHqY38tE9BS4HbVXRt5VYak7Yy84Xk2E7Jd1xnnZ5n/exec", {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/json"
-      },
-        body: JSON.stringify(data)
-      });
+      const res = await fetch("https://script.google.com/macros/s/AKfycbzPi9jLghl2dlv0zBzaie4Zniya2t3O2uWea0_SMbM4-l974DMEZ5qb_2pUvGKMSZXI/exec", {
+    method: "POST",
+    body: JSON.stringify(data)
+  });
 
       const msg = await res.text();
       console.log("Server response:", msg);
@@ -88,8 +98,7 @@ if (bookingForm) {
       console.error("Fetch error:", err);
 
       // ⚠️ FALLBACK 
-      alert("Booking submitted! If unsure, please check with the cafe.");
-      
+            
       bookingContainer.style.display = 'none';
       successScreen.style.display = 'flex';
     }
@@ -118,7 +127,7 @@ if (bookAgainBtn) {
     role: "Customer",
     location: "Suva, Fiji",
     rating: 5,
-    image: "https://i.pravatar.cc/100?img=1"
+
   },
   {
     text: "Had the best experience at Malo Cafe. The chicken burger and fries were perfectly cooked and full of flavor.",
@@ -126,7 +135,7 @@ if (bookAgainBtn) {
     role: "Customer",
     location: "Suva, Fiji",
     rating: 5,
-    image: "https://i.pravatar.cc/100?img=2"
+
   },
   {
     text: "Best poached eggs in Suva! Great smoothies, brunch, and coffee. The atmosphere is always buzzing.",
@@ -134,7 +143,7 @@ if (bookAgainBtn) {
     role: "Regular Customer",
     location: "Suva, Fiji",
     rating: 5,
-    image: "https://i.pravatar.cc/100?img=3"
+   
   },
   {
     text: "Huge menu with lots of options. Everything we tried was delicious. Friendly staff too.",
@@ -142,7 +151,7 @@ if (bookAgainBtn) {
     role: "Local Guide",
     location: "Suva, Fiji",
     rating: 4,
-    image: "https://i.pravatar.cc/100?img=4"
+
   },
   {
     text: "Great coffee and generous portions. Friendly staff and a really nice vibe.",
@@ -150,7 +159,7 @@ if (bookAgainBtn) {
     role: "Local Guide",
     location: "Suva, Fiji",
     rating: 4,
-    image: "https://i.pravatar.cc/100?img=5"
+    
   }
 ];
 
@@ -247,3 +256,13 @@ document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(link => {
         }, 500); // match CSS transition
       }, 1500); // minimum 1.5 seconds
     });
+
+// If user is already offline when page loads
+if (!navigator.onLine) {
+  window.location.href = "status-offline.html";
+}
+
+// When internet disconnects while browsing
+window.addEventListener("offline", function () {
+  window.location.href = "status-offline.html";
+});

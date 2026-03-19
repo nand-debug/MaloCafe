@@ -63,7 +63,7 @@ button { cursor: pointer; font-family: inherit; }
   font-size: 0.875rem; font-weight: 500; letter-spacing: 0.025em;
   color: var(--muted-foreground); transition: color 0.2s;
 }
-.nav-links a:hover, .nav-links a.active { color: var(--primary); }
+.nav-links a:hover, .nav-links a.active { color: #000; }
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   padding: 0.625rem 1.5rem; border-radius: var(--radius); font-weight: 600;
@@ -72,7 +72,7 @@ button { cursor: pointer; font-family: inherit; }
 }
 .btn:hover { opacity: 0.9; }
 .btn-lg { padding: 0.875rem 2rem; font-size: 1rem; }
-.btn-secondary { background: var(--secondary); color: var(--secondary-foreground); }
+.btn-secondary { background: var(--secondary); color: white; }
 .btn-full { width: 100%; }
 .hamburger { display: none; background: none; border: none; color: var(--foreground); }
 .hamburger svg { width: 24px; height: 24px; }
@@ -84,6 +84,56 @@ button { cursor: pointer; font-family: inherit; }
 .mobile-menu.open { display: flex; }
 .mobile-menu a { font-size: 1rem; font-weight: 500; color: var(--muted-foreground); }
 .mobile-menu a:hover, .mobile-menu a.active { color: var(--primary); }
+
+/* Home page navbar initial state */
+.home-page .navbar {
+  background: transparent;
+}
+
+.home-page .navbar .nav-links a:not(.btn) {
+  color: white; /* Links white */
+}
+
+.home-page .navbar .btn {
+  color: white; /* Book a Table always white text */
+  background: var(--primary); /* brown button background */
+  transition: all 0.3s;
+}
+
+/* Hover effect for Book a Table button */
+.home-page .navbar .btn:hover {
+  background: #8b5c2c; /* slightly darker brown or your desired hover color */
+  color: white; /* keep text white */
+}
+
+/* Nav links hover */
+.home-page .navbar .nav-links a:not(.btn):hover {
+  color: #8b5c2c; /* brown hover for links */
+}
+
+/* When scrolling down */
+.home-page .navbar.scrolled {
+  background: rgba(248, 246, 243, 0.95); /* white background */
+}
+
+.home-page .navbar.scrolled .nav-links a:not(.btn) {
+  color: var(--primary); /* brown links when scrolled */
+}
+
+.home-page .navbar.scrolled .nav-links a:not(.btn):hover {
+  color: #a46b33; /* slightly darker brown on hover */
+}
+
+/* Book a Table button always stays white text */
+.home-page .navbar.scrolled .btn {
+  color: white;
+}
+.home-page .navbar.scrolled .btn:hover {
+  background: #8b5c2c; /* hover effect */
+  color: white;
+}
+
+
 
 @media (max-width: 768px) {
   .nav-links { display: none; }

@@ -16,3 +16,7 @@
         }, 500); // wait for fade-out transition
       }, 5000); // 5 seconds loading
     });
+
+    window.addEventListener("online", function () {
+  window.location.href = "index.html";
+});
