@@ -40,11 +40,44 @@ const successScreen = document.getElementById('success-screen');
 const bookAgainBtn = document.getElementById('book-again');
 
 if (bookingForm) {
-  bookingForm.addEventListener('submit', (e) => {
+  bookingForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    bookingContainer.style.display = 'none';
-    successScreen.style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // 🚫 BOT PROTECTION
+    const botcheck = document.getElementById("botcheck");
+    if (botcheck && botcheck.value !== "") return;
+
+    // 📦 GET FORM DATA
+    const data = {
+      name: document.getElementById("name").value,
+      email: document.getElementById("email").value,
+      phone: document.getElementById("phone").value,
+      guests: parseInt(document.getElementById("guests").value),
+      date: document.getElementById("date").value,
+      time: document.getElementById("time").value,
+      requests: document.getElementById("requests").value
+    };
+
+    try {
+      const res = await fetch("https://script.google.com/macros/s/AKfycbzJyKCwEjqXz_vD8VsOcvRtpzrSHPuOVpGAMRgskJV_p1UGUlaZeVB7H78Kd5bj6Ho/exec", {
+        method: "POST",
+        body: JSON.stringify(data)
+      });
+
+      const msg = await res.text();
+
+      // ✅ ONLY SHOW SUCCESS IF BACKEND CONFIRMS
+      if (msg === "Booking confirmed!") {
+        bookingContainer.style.display = 'none';
+        successScreen.style.display = 'flex';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        alert(msg); // show error like "fully booked", etc.
+      }
+
+    } catch (err) {
+      alert("Something went wrong. Try again.");
+    }
   });
 }
 
@@ -55,7 +88,6 @@ if (bookAgainBtn) {
     bookingContainer.style.display = 'block';
   });
 }
-
 // ===== REVIEW CAROUSEL =====
 (function() {
   const carousel = document.getElementById('review-carousel');
@@ -184,4 +216,16 @@ document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(link => {
   if (href === currentPage || (currentPage === 'index.html' && href === 'index.html')) {
     link.classList.add('active');
   }
-});
+});// Wait for the full page to load
+    window.addEventListener('load', function() {
+      // Optional: keep preloader at least 3 seconds
+      setTimeout(function() {
+        const preloader = document.getElementById('preloader');
+        preloader.classList.add('hidden');
+        // After fade-out, remove preloader from DOM and show content
+        setTimeout(() => {
+          preloader.style.display = 'none';
+          document.body.classList.add('loaded');
+        }, 500); // match CSS transition
+      }, 1500); // minimum 1.5 seconds
+    });
