@@ -6,10 +6,12 @@
   <title>Malo Cafe</title>
   <meta name="description" content="Malo Cafe is a relaxed cafe in Suva, Fiji known for great coffee, delicious breakfasts, fresh smoothies, and friendly service.">
   <link rel="stylesheet" href="style.css">
-<link rel="icon" type="image/png" sizes="32x32" href="images/logo.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="images/logo.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="imimages/favicon_io/ages/favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon_io//favicon-16x16.png">
+<link rel="manifest" href="images/favicon_io/site.webmanifest">
 </head>
-<body>
+<body class="home-page">
 
    <!-- Preloader -->
   <div id="preloader">
@@ -24,12 +26,10 @@
   </div>
 
   <!-- Navbar -->
-   <body class="home-page"></body>
   <nav class="navbar">
     <div class="container">
       <a href="index.html" class="navbar-brand">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>
-        <span>Malo Cafe</span>
+        <img src="images/nav-logo.png" alt="Malo Cafe Logo" class="logo-img">
       </a>
       <div class="nav-links">
         <a href="index.html">Home</a>
@@ -37,11 +37,25 @@
         <a href="gallery.html">Gallery</a>
         <a href="booking.html">Book a Table</a>
         <a href="contact.html">Contact</a>
-        <a href="booking.html" class="btn">Book a Table</a>
+        <a href="booking.html" class="btn-book pill-btn">
+        <svg class="cup-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path class="steam-1" d="M7 4 Q6 2.5 7 1"/>
+          <path class="steam-2" d="M10 4 Q9 2.5 10 1"/>
+          <path class="steam-3" d="M13 4 Q12 2.5 13 1"/>
+          <path d="M4 6 h13 l-1.5 10 a1 1 0 0 1-1 0.9 H6.5 a1 1 0 0 1-1-0.9 Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="none"/>
+          <path d="M17 8.5 q3 0 3 2.5 t-3 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+          <path d="M3 18 Q10.5 20 18 18" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+        </svg>
+        Book a Table
+      </a>
       </div>
-      <button class="hamburger" aria-label="Toggle menu">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-      </button>
+<label class="hamburger" aria-label="Toggle menu">
+        <input type="checkbox" id="hamburger-check">
+        <svg viewBox="0 0 32 32">
+          <path class="line line-top-bottom" d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"></path>
+          <path class="line" d="M7 16 27 16"></path>
+        </svg>
+      </label>
     </div>
     <div class="mobile-menu">
       <a href="index.html">Home</a>
@@ -49,7 +63,7 @@
       <a href="gallery.html">Gallery</a>
       <a href="booking.html">Book a Table</a>
       <a href="contact.html">Contact</a>
-      <a href="booking.html" class="btn btn-full">Book a Table</a>
+      <a href="booking.html" class="btn-book-mobile">Book a Table</a>
     </div>
   </nav>
 
@@ -77,28 +91,28 @@
       <div class="grid-4" style="margin-top:4rem;">
         <div class="highlight-card animate-in" data-delay="0">
           <div class="highlight-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
+            <img src="images/icon/breakfast.png" alt="Fresh Breakfast Meals">          
           </div>
           <h3>Fresh Breakfast Meals</h3>
           <p>Start your day with our handcrafted morning plates</p>
         </div>
         <div class="highlight-card animate-in" data-delay="0.1">
           <div class="highlight-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>
+             <img src="images/icon/coffee.png" alt="Specialty Coffee">
           </div>
           <h3>Specialty Coffee</h3>
           <p>Expertly brewed from the finest Pacific beans</p>
         </div>
         <div class="highlight-card animate-in" data-delay="0.2">
           <div class="highlight-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-3.5 6.5"/><path d="M11.7 11.2a4.5 4.5 0 0 1 6.3 0c1.5 1.5 1.8 3.8.7 5.7L12 22l-6.7-5.1c-1.1-1.9-.8-4.2.7-5.7a4.5 4.5 0 0 1 5.7 0Z"/></svg>
+            <img src="images/icon/smoothie.png" alt="Smoothies">         
           </div>
           <h3>Smoothies & Brunch</h3>
           <p>Fresh tropical fruits blended to perfection</p>
         </div>
         <div class="highlight-card animate-in" data-delay="0.3">
           <div class="highlight-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            <img src="images/icon/friendly-atmosphere.png" alt="Friendly Atmosphere">          
           </div>
           <h3>Friendly Atmosphere</h3>
           <p>A warm space where everyone feels at home</p>
@@ -116,7 +130,7 @@
       </div>
       <div class="grid-3">
         <div class="menu-card animate-in" data-delay="0">
-          <div class="img-wrap"><img src="images/Mousse Cake.jpg" alt="Berry Pancakes"></div>
+          <div class="img-wrap"><img src="images/Mousse Cake.jpg" alt="Mousse Cake"></div>
           <div class="info"><h3>Mousse Cake</h3></div>
         </div>
         <div class="menu-card animate-in" data-delay="0.08">
@@ -164,6 +178,7 @@
         <div class="carousel-dots" id="carousel-dots"></div>
       </div>
     </div>
+    <a href="review.html" class="btn review">Leave a Review</a>
   </section>
 
   <!-- CTA -->
@@ -211,12 +226,16 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
               <span>+679 795 2690</span>
             </div>
-            <div class="footer-social">
-              <a href="#" aria-label="Instagram">
+                        <div class="footer-social">
+              <a href="#" class="footer-social-btn social-instagram" aria-label="Instagram">
+                <div class="footer-social-fill"></div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                <span class="footer-social-tooltip">Instagram</span>
               </a>
-              <a href="#" aria-label="Facebook">
+              <a href="#" class="footer-social-btn social-facebook" aria-label="Facebook">
+                <div class="footer-social-fill"></div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                <span class="footer-social-tooltip">Facebook</span>
               </a>
             </div>
           </div>
