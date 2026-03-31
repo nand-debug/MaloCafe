@@ -91,13 +91,22 @@ window.addEventListener('load', function () {
   }, 1500);
 });
 
-
-// ============================================================
-//  OFFLINE DETECTION
-// ============================================================
-if (!navigator.onLine) window.location.href = 'status-offline.html';
-window.addEventListener('offline', function () { window.location.href = 'status-offline.html'; });
-
+// ===== SERVICE WORKER (custom offline page) =====
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js')
+      .then(function(reg) { console.log('SW registered:', reg.scope); })
+      .catch(function(err) { console.log('SW failed:', err); });
+  });
+}
+ 
+// ===== OFFLINE DETECTION =====
+if (!navigator.onLine) {
+  window.location.href = 'status-offline.html';
+}
+window.addEventListener('offline', function () {
+  window.location.href = 'status-offline.html';
+});
 
 // ============================================================
 //  BOOKING FORM
