@@ -189,10 +189,9 @@ button { cursor: pointer; font-family: inherit; }
   fill: none;
   opacity: 0;
 }
-.btn-book:hover .steam-1 { animation: cupsteam 1.2s ease-in-out infinite; }
-.btn-book:hover .steam-2 { animation: cupsteam 1.2s ease-in-out 0.2s infinite; }
-.btn-book:hover .steam-3 { animation: cupsteam 1.2s ease-in-out 0.4s infinite; }
-
+.btn-book:hover .steam-1 { animation: cupsteam 1.2s ease-in-out infinite; stroke: black; }
+.btn-book:hover .steam-2 { animation: cupsteam 1.2s ease-in-out 0.2s infinite; stroke: black; }
+.btn-book:hover .steam-3 { animation: cupsteam 1.2s ease-in-out 0.4s infinite; stroke: black; }
 @keyframes cupsteam {
   0%   { opacity: 0;   transform: translateY(0px)   scaleX(1); }
   30%  { opacity: 0.9; transform: translateY(-3px)  scaleX(1.1); }
@@ -311,7 +310,9 @@ button { cursor: pointer; font-family: inherit; }
   border: 2px solid rgba(248, 246, 243, 0.95) ;
   border-radius: 999px;
 }
-.home-page .navbar.scrolled .btn-book:hover {
+
+
+.home-page .navbar.scrolled .btn-book:hover  {
   background: #8b5c2c;
   color: #8b5c2c !important;
   transform: translateY(-1px);
@@ -719,6 +720,15 @@ button { cursor: pointer; font-family: inherit; }
   background: var(--background);
   color: var(--foreground);
   transition: border-color 0.2s;
+}
+
+.image-upload-area img {
+  width: 60px;      
+  height: 60px;      
+  object-fit: cover;  
+  border-radius: 8px; 
+  display: block;
+  margin: 0 auto;    
 }
 
 .form-group input:focus,

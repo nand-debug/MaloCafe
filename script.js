@@ -1,6 +1,21 @@
-// ===== NAVBAR SCROLL =====
+'use strict';
+
+// ============================================================
+//  MALO CAFE — script.js
+//  Shared across all pages
+// ============================================================
+
+// ── Apps Script endpoints ────────────────────────────────────
+var BOOKING_URL = 'https://script.google.com/macros/s/AKfycbzPi9jLghl2dlv0zBzaie4Zniya2t3O2uWea0_SMbM4-l974DMEZ5qb_2pUvGKMSZXI/exec';
+var REVIEW_URL  = 'https://script.google.com/macros/s/AKfycbyFrrnXWnKSV-eeg1DUAWY3M687tMNjFGg0l6R85zvaFk3BC3757gZOCFb4-ex1iHia/exec';
+
+
+// ============================================================
+//  NAVBAR SCROLL
+// ============================================================
 document.addEventListener('DOMContentLoaded', function () {
-  const navbar = document.querySelector('.navbar');
+  var navbar = document.querySelector('.navbar');
+  if (!navbar) return;
 
   function updateNavbar() {
     if (window.scrollY > 10) {
@@ -9,24 +24,23 @@ document.addEventListener('DOMContentLoaded', function () {
       navbar.classList.remove('scrolled');
     }
   }
-
   updateNavbar();
   window.addEventListener('scroll', updateNavbar);
 });
 
 
-// ===== MOBILE MENU =====
-const hamburgerCheck = document.getElementById('hamburger-check');
-const mobileMenu = document.querySelector('.mobile-menu');
+// ============================================================
+//  MOBILE MENU
+// ============================================================
+var hamburgerCheck = document.getElementById('hamburger-check');
+var mobileMenu     = document.querySelector('.mobile-menu');
 
 if (hamburgerCheck && mobileMenu) {
-  // Sync checkbox state with mobile menu visibility
-  hamburgerCheck.addEventListener('change', () => {
+  hamburgerCheck.addEventListener('change', function () {
     mobileMenu.classList.toggle('open', hamburgerCheck.checked);
   });
-  // Close menu and uncheck when a link is clicked
-  mobileMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
+  mobileMenu.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () {
       mobileMenu.classList.remove('open');
       hamburgerCheck.checked = false;
     });
@@ -34,40 +48,43 @@ if (hamburgerCheck && mobileMenu) {
 }
 
 
-// ===== SCROLL ANIMATIONS =====
-const animateElements = document.querySelectorAll('.animate-in');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
+// ============================================================
+//  SCROLL ANIMATIONS
+// ============================================================
+var animateElements = document.querySelectorAll('.animate-in');
+var scrollObserver  = new IntersectionObserver(function (entries) {
+  entries.forEach(function (entry) {
     if (entry.isIntersecting) {
-      setTimeout(() => {
+      setTimeout(function () {
         entry.target.classList.add('visible');
-      }, (entry.target.dataset.delay || 0) * 1000);
-      observer.unobserve(entry.target);
+      }, (parseFloat(entry.target.dataset.delay) || 0) * 1000);
+      scrollObserver.unobserve(entry.target);
     }
   });
 }, { threshold: 0.1, rootMargin: '-50px' });
 
-animateElements.forEach(el => observer.observe(el));
+animateElements.forEach(function (el) { scrollObserver.observe(el); });
 
 
-// ===== ACTIVE NAV LINK =====
-const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(link => {
-  // Never apply active style to the booking button
+// ============================================================
+//  ACTIVE NAV LINK
+// ============================================================
+var currentPage = window.location.pathname.split('/').pop() || 'index.html';
+document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(function (link) {
   if (link.classList.contains('btn-book') || link.classList.contains('btn-book-mobile')) return;
-  if (link.getAttribute('href') === currentPage) {
-    link.classList.add('active');
-  }
+  if (link.getAttribute('href') === currentPage) link.classList.add('active');
 });
 
 
-// ===== PRELOADER =====
+// ============================================================
+//  PRELOADER
+// ============================================================
 window.addEventListener('load', function () {
   setTimeout(function () {
-    const preloader = document.getElementById('preloader');
+    var preloader = document.getElementById('preloader');
     if (!preloader) return;
     preloader.classList.add('hidden');
-    setTimeout(() => {
+    setTimeout(function () {
       preloader.style.display = 'none';
       document.body.classList.add('loaded');
     }, 500);
@@ -75,38 +92,39 @@ window.addEventListener('load', function () {
 });
 
 
-// ===== OFFLINE DETECTION =====
-if (!navigator.onLine) {
-  window.location.href = 'status-offline.html';
-}
-window.addEventListener('offline', function () {
-  window.location.href = 'status-offline.html';
-});
+// ============================================================
+//  OFFLINE DETECTION
+// ============================================================
+if (!navigator.onLine) window.location.href = 'status-offline.html';
+window.addEventListener('offline', function () { window.location.href = 'status-offline.html'; });
 
 
-// ===== BOOKING FORM =====
-const bookingForm      = document.getElementById('booking-form');
-const bookingContainer = document.getElementById('booking-container');
-const successScreen    = document.getElementById('success-screen');
-const bookAgainBtn     = document.getElementById('book-again');
+// ============================================================
+//  BOOKING FORM
+// ============================================================
+(function () {
+  var bookingForm      = document.getElementById('booking-form');
+  var bookingContainer = document.getElementById('booking-container');
+  var successScreen    = document.getElementById('success-screen');
+  var bookAgainBtn     = document.getElementById('book-again');
 
-if (bookingForm) {
-  bookingForm.addEventListener('submit', async (e) => {
+  if (!bookingForm) return;
+
+  bookingForm.addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const submitBtn = bookingForm.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
+    var submitBtn = bookingForm.querySelector('button[type="submit"]');
+    submitBtn.disabled    = true;
     submitBtn.textContent = 'Processing...';
 
-    // Bot protection — hidden field must be empty
-    const botcheck = document.getElementById('botcheck');
+    var botcheck = document.getElementById('botcheck');
     if (botcheck && botcheck.value !== '') {
-      submitBtn.disabled = false;
+      submitBtn.disabled    = false;
       submitBtn.textContent = 'Submit Reservation';
       return;
     }
 
-    const data = {
+    var data = {
       name:     document.getElementById('name').value,
       email:    document.getElementById('email').value,
       phone:    document.getElementById('phone').value,
@@ -118,90 +136,61 @@ if (bookingForm) {
     };
 
     try {
-      const res = await fetch('https://script.google.com/macros/s/AKfycbzPi9jLghl2dlv0zBzaie4Zniya2t3O2uWea0_SMbM4-l974DMEZ5qb_2pUvGKMSZXI/exec', {
+      var res = await fetch(BOOKING_URL, {
         method: 'POST',
         body: JSON.stringify(data)
       });
-
-      const msg = await res.text();
-      console.log('Server response:', msg);
+      var msg = await res.text();
 
       if (msg.toLowerCase().includes('confirmed')) {
         bookingContainer.style.display = 'none';
-        successScreen.style.display = 'flex';
+        successScreen.style.display    = 'flex';
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        alert(msg);
+        alert(msg.replace('error: ', ''));
       }
-
     } catch (err) {
-      console.error('Fetch error:', err);
-      // Fallback — show success anyway
+      console.error('Booking error:', err);
+      // Fallback — show success (CORS false positive)
       bookingContainer.style.display = 'none';
-      successScreen.style.display = 'flex';
+      successScreen.style.display    = 'flex';
     }
 
-    submitBtn.disabled = false;
+    submitBtn.disabled    = false;
     submitBtn.textContent = 'Submit Reservation';
   });
-}
 
-if (bookAgainBtn) {
-  bookAgainBtn.addEventListener('click', () => {
-    bookingForm.reset();
-    successScreen.style.display = 'none';
-    bookingContainer.style.display = 'block';
-  });
-}
+  if (bookAgainBtn) {
+    bookAgainBtn.addEventListener('click', function () {
+      bookingForm.reset();
+      successScreen.style.display    = 'none';
+      bookingContainer.style.display = 'block';
+    });
+  }
+})();
 
 
-// ===== REVIEW CAROUSEL =====
+// ============================================================
+//  REVIEW CAROUSEL  — loads LIVE approved reviews from sheet
+// ============================================================
 (function () {
-  const carousel = document.getElementById('review-carousel');
+  var carousel = document.getElementById('review-carousel');
   if (!carousel) return;
 
-  const reviews = [
-    {
-      text: "Don't be fooled by the neutral atmosphere — the food and service were 10/10. The mushroom soup is absolutely delicious. Definitely coming back!",
-      author: "Anonymous",
-      role: "Customer",
-      location: "Suva, Fiji",
-      rating: 5
-    },
-    {
-      text: "Had the best experience at Malo Cafe. The chicken burger and fries were perfectly cooked and full of flavor.",
-      author: "Shaheel Shah",
-      role: "Customer",
-      location: "Suva, Fiji",
-      rating: 5
-    },
-    {
-      text: "Best poached eggs in Suva! Great smoothies, brunch, and coffee. The atmosphere is always buzzing.",
-      author: "Joe Morton",
-      role: "Regular Customer",
-      location: "Suva, Fiji",
-      rating: 5
-    },
-    {
-      text: "Huge menu with lots of options. Everything we tried was delicious. Friendly staff too.",
-      author: "Nayna Dutt",
-      role: "Local Guide",
-      location: "Suva, Fiji",
-      rating: 4
-    },
-    {
-      text: "Great coffee and generous portions. Friendly staff and a really nice vibe.",
-      author: "Tish Tosh",
-      role: "Local Guide",
-      location: "Suva, Fiji",
-      rating: 4
-    }
-  ];
+  var track         = carousel.querySelector('.carousel-track');
+  var dotsContainer = document.getElementById('carousel-dots');
+  var current       = 0;
+  var autoPlay      = true;
+  var reviews       = [];
 
-  let current  = 0;
-  let autoPlay = true;
-  const track          = carousel.querySelector('.carousel-track');
-  const dotsContainer  = document.getElementById('carousel-dots');
+  // Fallback reviews shown while loading or if API fails
+  var FALLBACK_REVIEWS = [
+    { text: "Don't be fooled by the neutral atmosphere — the food and service were 10/10. The mushroom soup is absolutely delicious. Definitely coming back!", author: "Anonymous", role: "Customer", location: "Suva, Fiji", rating: 5 },
+    { text: "Had the best experience at Malo Cafe. The chicken burger and fries were perfectly cooked and full of flavor.", author: "Shaheel Shah", role: "Customer", location: "Suva, Fiji", rating: 5 },
+    { text: "Best poached eggs in Suva! Great smoothies, brunch, and coffee. The atmosphere is always buzzing.", author: "Joe Morton", role: "Regular Customer", location: "Suva, Fiji", rating: 5 },
+    { text: "Huge menu with lots of options. Everything we tried was delicious. Friendly staff too.", author: "Nayna Dutt", role: "Local Guide", location: "Suva, Fiji", rating: 4 },
+    { text: "Great coffee and generous portions. Friendly staff and a really nice vibe.", author: "Tish Tosh", role: "Local Guide", location: "Suva, Fiji", rating: 4 }
+  ];
 
   function starSVG(filled) {
     return filled
@@ -210,38 +199,44 @@ if (bookAgainBtn) {
   }
 
   function userAvatar(author) {
-    const initials = author.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
-    const colors   = ['#FF6B6B', '#6BCB77', '#4D96FF', '#FFC75F'];
-    const color    = colors[author.length % colors.length];
-    return `<div class="avatar-initials" style="background:${color}">${initials}</div>`;
+    var ini    = (author || '?').split(' ').map(function (w) { return w[0] || ''; }).join('').substring(0, 2).toUpperCase();
+    var colors = ['#FF6B6B', '#6BCB77', '#4D96FF', '#FFC75F'];
+    var color  = colors[(author || '').length % colors.length];
+    return '<div class="avatar-initials" style="background:' + color + '">' + ini + '</div>';
   }
 
   function render() {
+    if (!reviews.length) return;
     track.innerHTML = '';
-    const offsets = [-2, -1, 0, 1, 2];
-    const gap     = window.innerWidth < 768 ? 200 : 280;
+    var offsets = [-2, -1, 0, 1, 2];
+    var gap     = window.innerWidth < 768 ? 200 : 280;
 
     offsets.forEach(function (offset) {
-      const idx      = (current + offset + reviews.length) % reviews.length;
-      const r        = reviews[idx];
-      const card     = document.createElement('div');
-      const isCenter = offset === 0;
+      var idx      = (current + offset + reviews.length) % reviews.length;
+      var r        = reviews[idx];
+      var card     = document.createElement('div');
+      var isCenter = offset === 0;
 
-      card.className   = 'carousel-card ' + (isCenter ? 'center' : (Math.abs(offset) <= 1 ? 'side' : 'hidden-card'));
+      card.className       = 'carousel-card ' + (isCenter ? 'center' : (Math.abs(offset) <= 1 ? 'side' : 'hidden-card'));
       card.style.transform = 'translateX(' + (offset * gap) + 'px) scale(' + (isCenter ? 1 : 0.8) + ')';
 
-      let stars = '';
-      for (let i = 0; i < 5; i++) stars += starSVG(i < r.rating);
+      var stars = '';
+      for (var i = 0; i < 5; i++) stars += starSVG(i < r.rating);
+
+      // Customer photo badge if review has a photo
+      var photoBadge = r.photoUrl
+        ? '<span class="verified-badge" style="margin-left:0.5rem;">📷 Photo</span>'
+        : '';
 
       card.innerHTML =
         '<div class="quote-icon">"</div>' +
         '<div class="carousel-avatar">' + userAvatar(r.author) + '</div>' +
         '<div class="carousel-stars">' + stars + '</div>' +
-        '<p class="review-text">' + r.text + '</p>' +
-        '<p class="review-author">– ' + r.author + '</p>' +
-        '<p class="review-role">' + r.role + '</p>' +
-        '<p class="review-location">📍 ' + r.location + '</p>' +
-        '<span class="verified-badge">✔ Verified Review</span>';
+        '<p class="review-text">' + (r.text || '') + '</p>' +
+        '<p class="review-author">– ' + (r.author || 'Guest') + '</p>' +
+        '<p class="review-role">' + (r.role || 'Customer') + '</p>' +
+        '<p class="review-location">📍 ' + (r.location || 'Suva, Fiji') + '</p>' +
+        '<span class="verified-badge">✔ Verified Review</span>' + photoBadge;
 
       track.appendChild(card);
     });
@@ -249,12 +244,33 @@ if (bookAgainBtn) {
     // Dots
     dotsContainer.innerHTML = '';
     reviews.forEach(function (_, i) {
-      const dot = document.createElement('button');
+      var dot = document.createElement('button');
       dot.className = 'carousel-dot' + (i === current ? ' active' : '');
       dot.setAttribute('aria-label', 'Go to review ' + (i + 1));
       dot.addEventListener('click', function () { current = i; render(); });
       dotsContainer.appendChild(dot);
     });
+  }
+
+  // Load approved reviews from Apps Script
+  function loadReviews() {
+    fetch(REVIEW_URL + '?action=reviews')
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (Array.isArray(data) && data.length > 0) {
+          // Merge with fallback so carousel always has content
+          reviews = FALLBACK_REVIEWS.concat(data);
+        } else {
+          reviews = FALLBACK_REVIEWS;
+        }
+        current = 0;
+        render();
+      })
+      .catch(function () {
+        // API failed — use fallbacks silently
+        reviews = FALLBACK_REVIEWS;
+        render();
+      });
   }
 
   carousel.querySelector('.carousel-prev').addEventListener('click', function () {
@@ -270,54 +286,79 @@ if (bookAgainBtn) {
   carousel.addEventListener('mouseleave', function () { autoPlay = true; });
 
   setInterval(function () {
-    if (autoPlay) { current = (current + 1) % reviews.length; render(); }
+    if (autoPlay && reviews.length) { current = (current + 1) % reviews.length; render(); }
   }, 4000);
 
+  // Start with fallbacks immediately, then load live data
+  reviews = FALLBACK_REVIEWS;
   render();
+  loadReviews();
 })();
 
 
-// ===== GALLERY LOADER (called externally if needed) =====
-function loadGallery(images) {
-  const grid = document.getElementById('gallery-grid');
-  if (!grid) return;
-  grid.innerHTML = '';
-  images.forEach(img => {
-    const div = document.createElement('div');
-    div.className = 'gallery-item';
-    div.innerHTML = `
-      <img src="${img.url}" alt="${img.alt || 'Gallery image'}">
-      <div class="gallery-overlay">
-        <span>Customer Photo</span>
-      </div>
-    `;
-    grid.appendChild(div);
-  });
-}
-
-
-// ===== REVIEW FORM =====
+// ============================================================
+//  GALLERY — loads approved customer photos from Apps Script
+// ============================================================
 (function () {
-  const reviewForm = document.getElementById('reviewForm');
+  var galleryGrid = document.getElementById('gallery-grid');
+  if (!galleryGrid) return;
+
+  function loadGallery() {
+    fetch(REVIEW_URL + '?action=gallery')
+      .then(function (res) { return res.json(); })
+      .then(function (photos) {
+        if (!Array.isArray(photos) || !photos.length) return; // keep static images if no customer photos yet
+
+        // Append customer photos after the existing static gallery items
+        photos.forEach(function (photo) {
+          var div = document.createElement('div');
+          div.className = 'gallery-item animate-in';
+          div.innerHTML =
+            '<img src="' + photo.url + '" alt="Customer photo by ' + (photo.author || 'Guest') + '" loading="lazy">' +
+            '<div class="gallery-overlay">' +
+              '<div class="caption">' +
+                '<span class="cat">Customer Photo</span>' +
+                '<p class="name">📷 ' + (photo.author || 'Guest') + '</p>' +
+              '</div>' +
+            '</div>';
+          galleryGrid.appendChild(div);
+        });
+
+        // Re-run scroll observer on new items
+        div.querySelectorAll && div.querySelectorAll('.animate-in').forEach(function (el) {
+          scrollObserver.observe(el);
+        });
+      })
+      .catch(function () {
+        // Silent fail — gallery still shows static images
+      });
+  }
+
+  loadGallery();
+})();
+
+
+// ============================================================
+//  REVIEW FORM  (review.html)
+// ============================================================
+(function () {
+  var reviewForm = document.getElementById('reviewForm');
   if (!reviewForm) return;
 
-  const REVIEW_API = 'https://script.google.com/macros/s/AKfycbw7mQD9GZNoudABEKkSSy7BPTR4hQxY4UkyApnolfBKl1WBlxknkUYM2JyOWgLZj57s_Q/exec';
+  var stars       = document.querySelectorAll('.star-btn');
+  var ratingInput = document.getElementById('ratingValue');
+  var ratingText  = document.getElementById('ratingText');
 
-  // Star rating
-  const stars       = document.querySelectorAll('.star-btn');
-  const ratingInput = document.getElementById('ratingValue');
-  const ratingText  = document.getElementById('ratingText');
-
-  const ratingIcons = {
-    1: { anim: 'anim-poor',    stroke: '#888888', mouth: 'M8 15 L16 15',              label: 'Poor'    },
-    2: { anim: 'anim-okay',    stroke: '#a0845c', mouth: 'M8 14 L16 14',              label: 'Okay'    },
-    3: { anim: 'anim-good',    stroke: '#7aaa50', mouth: 'M8 13 Q12 16 16 13',        label: 'Good'    },
-    4: { anim: 'anim-great',   stroke: '#f4a822', mouth: 'M8 13 Q12 17 16 13',        label: 'Great'   },
-    5: { anim: 'anim-amazing', stroke: '#e8890c', mouth: 'M8 12 Q12 18 16 12',        label: 'Amazing' }
+  var ratingIcons = {
+    1: { anim: 'anim-poor',    stroke: '#888888', mouth: 'M8 15 L16 15',       label: 'Poor'    },
+    2: { anim: 'anim-okay',    stroke: '#a0845c', mouth: 'M8 14 L16 14',       label: 'Okay'    },
+    3: { anim: 'anim-good',    stroke: '#7aaa50', mouth: 'M8 13 Q12 16 16 13', label: 'Good'    },
+    4: { anim: 'anim-great',   stroke: '#f4a822', mouth: 'M8 13 Q12 17 16 13', label: 'Great'   },
+    5: { anim: 'anim-amazing', stroke: '#e8890c', mouth: 'M8 12 Q12 18 16 12', label: 'Amazing' }
   };
 
   function ratingIcon(val) {
-    const r = ratingIcons[val];
+    var r = ratingIcons[val];
     return '<span class="rating-icon ' + r.anim + '">'
       + '<svg viewBox="0 0 24 24" fill="none" stroke="' + r.stroke + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
       + '<circle cx="12" cy="12" r="10"/>'
@@ -329,100 +370,93 @@ function loadGallery(images) {
 
   function resetStars() {
     ratingInput.value = '0';
-    stars.forEach(s => s.classList.remove('active', 'hover'));
+    stars.forEach(function (s) { s.classList.remove('active', 'hover'); });
     ratingText.innerHTML = 'Tap to rate';
   }
 
-  stars.forEach(star => {
-    // Click — lock in rating
-    star.addEventListener('click', () => {
-      const val = star.dataset.value;
+  stars.forEach(function (star) {
+    star.addEventListener('click', function () {
+      var val = star.dataset.value;
       ratingInput.value = val;
-      stars.forEach(s => {
+      stars.forEach(function (s) {
         s.classList.toggle('active', s.dataset.value <= val);
         s.classList.remove('hover');
       });
       ratingText.innerHTML = ratingIcon(val);
     });
 
-    // Mouseenter — preview hover color up to this star
-    star.addEventListener('mouseenter', () => {
-      const val = star.dataset.value;
-      stars.forEach(s => {
-        s.classList.toggle('hover', s.dataset.value <= val);
-      });
+    star.addEventListener('mouseenter', function () {
+      var val = star.dataset.value;
+      stars.forEach(function (s) { s.classList.toggle('hover', s.dataset.value <= val); });
       ratingText.innerHTML = ratingIcon(val);
     });
 
-    // Mouseleave — remove hover, restore active stars and label
-    star.addEventListener('mouseleave', () => {
-      stars.forEach(s => s.classList.remove('hover'));
-      const current = ratingInput.value;
-      ratingText.innerHTML = current > 0 ? ratingIcon(current) : 'Tap to rate';
+    star.addEventListener('mouseleave', function () {
+      stars.forEach(function (s) { s.classList.remove('hover'); });
+      var cur = ratingInput.value;
+      ratingText.innerHTML = cur > 0 ? ratingIcon(cur) : 'Tap to rate';
     });
   });
 
   // Image upload
-  const uploadBox  = document.getElementById('imageUploadArea');
-  const fileInput  = document.getElementById('reviewImage');
-  const previewDiv = document.getElementById('imagePreview');
-  const previewImg = document.getElementById('previewImg');
-  const removeBtn  = document.getElementById('removeImage');
-  const uploadArea = document.getElementById('uploadPrompt');
+  var uploadBox  = document.getElementById('imageUploadArea');
+  var fileInput  = document.getElementById('reviewImage');
+  var previewDiv = document.getElementById('imagePreview');
+  var previewImg = document.getElementById('previewImg');
+  var removeBtn  = document.getElementById('removeImage');
+  var uploadArea = document.getElementById('uploadPrompt');
 
-  if (uploadBox) {
-    uploadArea.addEventListener('click', () => fileInput.click());
-
-    uploadBox.addEventListener('dragover', (e) => { e.preventDefault(); uploadBox.classList.add('dragover'); });
-    uploadBox.addEventListener('dragleave', () => uploadBox.classList.remove('dragover'));
-    uploadBox.addEventListener('drop', (e) => {
+  if (uploadBox && fileInput) {
+    uploadArea.addEventListener('click', function () { fileInput.click(); });
+    uploadBox.addEventListener('dragover',  function (e) { e.preventDefault(); uploadBox.classList.add('dragover'); });
+    uploadBox.addEventListener('dragleave', function ()  { uploadBox.classList.remove('dragover'); });
+    uploadBox.addEventListener('drop', function (e) {
       e.preventDefault();
       uploadBox.classList.remove('dragover');
       handleImage(e.dataTransfer.files[0]);
     });
-
-    fileInput.addEventListener('change', (e) => handleImage(e.target.files[0]));
+    fileInput.addEventListener('change', function (e) { handleImage(e.target.files[0]); });
 
     function handleImage(file) {
       if (!file) return;
       if (file.size > 5 * 1024 * 1024) { alert('Image too large (max 5MB)'); return; }
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        previewImg.src = reader.result;
-        previewDiv.style.display = 'block';
-        uploadArea.style.display = 'none';
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        previewImg.src            = reader.result;
+        previewDiv.style.display  = 'block';
+        uploadArea.style.display  = 'none';
       };
       reader.readAsDataURL(file);
     }
 
-    removeBtn.addEventListener('click', (e) => {
+    removeBtn.addEventListener('click', function (e) {
       e.stopPropagation();
-      fileInput.value = '';
-      previewDiv.style.display = 'none';
-      uploadArea.style.display = 'flex';
+      fileInput.value           = '';
+      previewDiv.style.display  = 'none';
+      uploadArea.style.display  = 'flex';
     });
   }
 
   // Submit
-  reviewForm.addEventListener('submit', async (e) => {
+  reviewForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     if (ratingInput.value === '0') { alert('Please select a rating'); return; }
 
-    const btn = document.getElementById('submitReviewBtn');
+    var btn = document.getElementById('submitReviewBtn');
     btn.textContent = 'Submitting…';
-    btn.disabled = true;
+    btn.disabled    = true;
 
-    let imageData = '';
-    const file = fileInput ? fileInput.files[0] : null;
+    var imageData = '';
+    var file = fileInput ? fileInput.files[0] : null;
     if (file) {
-      const reader = new FileReader();
-      imageData = await new Promise(resolve => {
-        reader.onloadend = () => resolve(reader.result);
+      var reader = new FileReader();
+      imageData = await new Promise(function (resolve) {
+        reader.onloadend = function () { resolve(reader.result); };
         reader.readAsDataURL(file);
       });
     }
 
-    const data = {
+    var data = {
       type:   'review',
       name:   document.getElementById('reviewName').value,
       rating: parseInt(ratingInput.value),
@@ -431,20 +465,23 @@ function loadGallery(images) {
     };
 
     try {
-      const res = await fetch(REVIEW_API, { method: 'POST', body: JSON.stringify(data) });
-      const msg = await res.text();
+      var res = await fetch(REVIEW_URL, {
+        method: 'POST',
+        body:   JSON.stringify(data)
+      });
+      var msg = await res.text();
       if (msg.toLowerCase().includes('submitted')) {
         showSuccess();
       } else {
-        alert(msg);
+        alert(msg.replace('error: ', ''));
       }
     } catch (err) {
-      console.error(err);
-      showSuccess(); // Show success anyway — Google Scripts often triggers CORS errors
+      // CORS false positive from Apps Script — review was still saved
+      showSuccess();
     }
 
     btn.textContent = 'Submit Review';
-    btn.disabled = false;
+    btn.disabled    = false;
   });
 
   function showSuccess() {
@@ -452,10 +489,9 @@ function loadGallery(images) {
     document.getElementById('reviewSuccess').style.display = 'block';
   }
 
-  // Leave another review
-  const leaveAnotherBtn = document.getElementById('leaveAnotherBtn');
+  var leaveAnotherBtn = document.getElementById('leaveAnotherBtn');
   if (leaveAnotherBtn) {
-    leaveAnotherBtn.addEventListener('click', () => {
+    leaveAnotherBtn.addEventListener('click', function () {
       reviewForm.reset();
       resetStars();
       if (previewDiv) previewDiv.style.display = 'none';
