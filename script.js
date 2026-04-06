@@ -6,7 +6,7 @@
 // ============================================================
 
 // ── Apps Script endpoints ────────────────────────────────────
-var BOOKING_URL = 'https://script.google.com/macros/s/AKfycbzPi9jLghl2dlv0zBzaie4Zniya2t3O2uWea0_SMbM4-l974DMEZ5qb_2pUvGKMSZXI/exec';
+var BOOKING_URL = 'https://script.google.com/macros/s/AKfycbyMddgpN0hEno63kTVnmjlayaLhzRFZohDPsz3bzhRwJOSDIiMJ5XPSxF4qaYQZo7iE/exec';
 var REVIEW_URL  = 'https://script.google.com/macros/s/AKfycbyFrrnXWnKSV-eeg1DUAWY3M687tMNjFGg0l6R85zvaFk3BC3757gZOCFb4-ex1iHia/exec';
 
 
@@ -312,35 +312,42 @@ window.addEventListener('offline', function () {
   var galleryGrid = document.getElementById('gallery-grid');
   if (!galleryGrid) return;
 
+  function makeSquare(url) {
+    return url.replace(
+      '/upload/',
+      '/upload/w_600,h_600,c_fill,g_auto,q_auto,f_auto/'
+    );
+  }
+
   function loadGallery() {
     fetch(REVIEW_URL + '?action=gallery')
       .then(function (res) { return res.json(); })
       .then(function (photos) {
-        if (!Array.isArray(photos) || !photos.length) return; // keep static images if no customer photos yet
+        if (!Array.isArray(photos) || !photos.length) return;
 
-        // Append customer photos after the existing static gallery items
         photos.forEach(function (photo) {
+          var square = makeSquare(photo.url);
+
           var div = document.createElement('div');
           div.className = 'gallery-item animate-in';
+
           div.innerHTML =
-            '<img src="' + photo.url + '" alt="Customer photo by ' + (photo.author || 'Guest') + '" loading="lazy">' +
+            '<img src="' + square + '" alt="Customer photo by ' + (photo.author || 'Guest') + '" loading="lazy">' +
             '<div class="gallery-overlay">' +
               '<div class="caption">' +
                 '<span class="cat">Customer Photo</span>' +
                 '<p class="name">📷 ' + (photo.author || 'Guest') + '</p>' +
               '</div>' +
             '</div>';
-          galleryGrid.appendChild(div);
-        });
 
-        // Re-run scroll observer on new items
-        div.querySelectorAll && div.querySelectorAll('.animate-in').forEach(function (el) {
-          scrollObserver.observe(el);
+          galleryGrid.appendChild(div);
+
+          if (window.scrollObserver) {
+            scrollObserver.observe(div);
+          }
         });
       })
-      .catch(function () {
-        // Silent fail — gallery still shows static images
-      });
+      .catch(function () {});
   }
 
   loadGallery();

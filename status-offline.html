@@ -17,6 +17,13 @@
 
 
 <script src="status.js"></script>
-
+ 
+  <script>
+    // Auto-redirect back to home when connection is restored
+    window.addEventListener('online', function() {
+      window.location.href = 'index.html';
+    });
+  </script>
+  
 </body>
 </html>
