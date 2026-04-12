@@ -1,29 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 Not Found</title>
-    <link rel="stylesheet" href="status.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You're Offline – Malo Cafe</title>
+  <link rel="stylesheet" href="status.css">
 </head>
 <body>
 
-<div class="container">
-    <h1>404 Not Found</h1>
-    <img src="images/Notfound.gif" alt="404 Not Found GIF" loading="lazy">
-    <p>Sorry, the page you are looking for could not be found.</p>
-   <a href="index.html" class="home-button">Go Home</a>
+<div class="status-shell">
+  <div class="status-panel">
+    <div class="status-content">
+
+      <figure class="status-image-wrap">
+        <img src="images/Notfound.gif" alt="Offline illustration" class="status-image" loading="lazy">
+      </figure>
+
+      <div class="status-copy">
+        <span class="status-eyebrow">No Connection</span>
+        <h1 class="status-title">You're offline</h1>
+        <p class="status-text">
+          Looks like you lost your internet connection.
+          Check your Wi-Fi or mobile data, then we'll take you right back to Malo Cafe.
+        </p>
+
+        <div class="status-dots" id="status-dots">
+          <div class="status-dot"></div>
+          <div class="status-dot"></div>
+          <div class="status-dot"></div>
+        </div>
+        <p class="status-meta" id="status-meta">Waiting for connection…</p>
+
+        <div class="status-actions">
+          <button class="status-button status-button-primary" onclick="retryNow()">Try again</button>
+          <a href="index.html" class="status-button status-button-secondary">Go home</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
 
-
-<script src="status.js"></script>
- 
-  <script>
-    // Auto-redirect back to home when connection is restored
-    window.addEventListener('online', function() {
+<script>
+  // Redirect back to home the moment connection returns
+  window.addEventListener('online', function () {
+    document.getElementById('status-meta').textContent = 'Connection restored! Redirecting…';
+    setTimeout(function () {
       window.location.href = 'index.html';
-    });
-  </script>
-  
+    }, 800);
+  });
+
+  // Manual retry button
+  function retryNow() {
+    if (navigator.onLine) {
+      window.location.href = 'index.html';
+    } else {
+      var meta = document.getElementById('status-meta');
+      meta.textContent = 'Still offline. Please check your connection.';
+      setTimeout(function () {
+        meta.textContent = 'Waiting for connection…';
+      }, 3000);
+    }
+  }
+
+  // Scroll to top on load
+  window.addEventListener('load', function () {
+    window.scrollTo(0, 0);
+  });
+</script>
+
 </body>
 </html>

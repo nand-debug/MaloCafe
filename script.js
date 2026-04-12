@@ -91,22 +91,97 @@ window.addEventListener('load', function () {
   }, 1500);
 });
 
-// ===== SERVICE WORKER (custom offline page) =====
+// ============================================================
+//  PAGE TRANSITION LOADER
+// ============================================================
+(function () {
+  // Build the overlay once and append to body
+  var overlay = document.createElement('div');
+  overlay.id  = 'page-loader';
+  overlay.innerHTML =
+    '<div class="pl-inner">' +
+      '<div class="pl-spinner"></div>' +
+      '<p class="pl-text">Loading…</p>' +
+    '</div>';
+  document.body.appendChild(overlay);
+ 
+  var loaderTimer = null;
+ 
+  function showLoader() {
+    clearTimeout(loaderTimer);
+    // Only show the loader if the page hasn't loaded within 200 ms
+    // (fast pages = no flash, slow pages = clear feedback)
+    loaderTimer = setTimeout(function () {
+      overlay.classList.add('pl-visible');
+    }, 200);
+  }
+ 
+  function hideLoader() {
+    clearTimeout(loaderTimer);
+    overlay.classList.remove('pl-visible');
+  }
+ 
+  // Intercept every internal <a> click
+  document.addEventListener('click', function (e) {
+    var anchor = e.target.closest('a');
+    if (!anchor) return;
+    var href = anchor.getAttribute('href');
+    if (!href) return;
+ 
+    // Skip: external links, anchors (#), mailto, tel, javascript:
+    if (
+      href.startsWith('http') ||
+      href.startsWith('//') ||
+      href.startsWith('#') ||
+      href.startsWith('mailto') ||
+      href.startsWith('tel') ||
+      href.startsWith('javascript')
+    ) return;
+ 
+    // Skip if opening in a new tab
+    if (anchor.target === '_blank') return;
+ 
+    showLoader();
+  });
+ 
+  // Hide once the new page is fully painted
+  window.addEventListener('pageshow', function () { hideLoader(); });
+  window.addEventListener('load',     function () { hideLoader(); });
+})();
+ 
+ 
+// ============================================================
+//  SERVICE WORKER  (registers /sw.js for offline support)
+// ============================================================
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
+  window.addEventListener('load', function () {
     navigator.serviceWorker.register('/sw.js')
-      .then(function(reg) { console.log('SW registered:', reg.scope); })
-      .catch(function(err) { console.log('SW failed:', err); });
+      .then(function (reg) { console.log('SW registered:', reg.scope); })
+      .catch(function (err) { console.log('SW failed:', err); });
   });
 }
  
-// ===== OFFLINE DETECTION =====
-if (!navigator.onLine) {
-  window.location.href = 'status-offline.html';
+ 
+// ============================================================
+//  OFFLINE DETECTION
+//  Only redirects to the offline page when the connection is
+//  actually lost — NOT on slow connections or random errors.
+// ============================================================
+function goOffline() {
+  // Don't redirect if we're already on the offline page
+  if (window.location.pathname.indexOf('status-offline') === -1) {
+    window.location.href = 'status-offline.html';
+  }
 }
-window.addEventListener('offline', function () {
-  window.location.href = 'status-offline.html';
-});
+ 
+// Redirect when the browser fires the 'offline' event
+// (this is reliable — fires only when the connection truly drops)
+window.addEventListener('offline', goOffline);
+ 
+// On page load: if the browser already knows we're offline, redirect immediately
+if (!navigator.onLine) {
+  goOffline();
+}
 
 // ============================================================
 //  BOOKING FORM
@@ -517,3 +592,6 @@ window.addEventListener('offline', function () {
     });
   }
 })();
+
+
+

@@ -21,6 +21,7 @@
    16. Animations
    17. Find Us
    18. Preloader
+   19. Page Transition Loader
    20. Review Form (star rating, upload)
    21. Responsive overrides
    ============================================================ */
@@ -105,8 +106,6 @@ button { cursor: pointer; font-family: inherit; }
   text-decoration: none;
 }
 
-.navbar-brand svg { width: 28px; height: 28px; color: var(--primary); }
-.navbar-brand span { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; }
 
 .nav-links { display: flex; align-items: center; gap: 2rem; }
 
@@ -120,7 +119,6 @@ button { cursor: pointer; font-family: inherit; }
 
 .nav-links a:hover { color: var(--primary); }
 
-/* Active page — oval pill indicator */
 .nav-links a.active {
   color: var(--primary);
   background: var(--cafe-warm);
@@ -151,7 +149,6 @@ button { cursor: pointer; font-family: inherit; }
 
 /* ===== COFFEE BOOKING BUTTON ===== */
 
-/* Desktop — cup + steam (hidden on tablet/mobile) */
 .btn-book {
   display: inline-flex;
   align-items: center;
@@ -169,6 +166,7 @@ button { cursor: pointer; font-family: inherit; }
   text-decoration: none;
   transition: background 0.25s, transform 0.2s, color 0.2s;
 }
+
 .btn-book:hover { background: #8b5c2c; transform: translateY(-1px); color: black !important; }
 
 .btn-book .cup-svg {
@@ -178,7 +176,6 @@ button { cursor: pointer; font-family: inherit; }
   overflow: visible;
 }
 
-/* Steam animation */
 .btn-book .steam-1,
 .btn-book .steam-2,
 .btn-book .steam-3 {
@@ -198,13 +195,12 @@ button { cursor: pointer; font-family: inherit; }
   100% { opacity: 0;   transform: translateY(-11px) scaleX(1); }
 }
 
-/* Mobile/tablet — pill only, no icon */
 .btn-book-mobile {
   display: none;
   align-items: center;
   padding: 0.6rem 1.35rem;
   background: var(--primary);
-  color: var(--primary-foreground);
+  color: #ffffff;
   border: none;
   border-radius: 999px;
   font-size: 0.875rem;
@@ -216,9 +212,8 @@ button { cursor: pointer; font-family: inherit; }
   width: 100%;
   justify-content: center;
 }
-.btn-book-mobile:hover { background: #8b5c2c; color: white; }
+.btn-book-mobile:hover { background: #8b5c2c; color: #ffffff; }
 
-/* Hide desktop button on tablet/mobile, show pill */
 @media (max-width: 768px) {
   .btn-book       { display: none; }
   .btn-book-mobile{ display: inline-flex; }
@@ -253,7 +248,6 @@ button { cursor: pointer; font-family: inherit; }
   stroke-dasharray: 20 300;
   stroke-dashoffset: -32.42;
 }
-/* On home page, stroke is white when navbar is transparent */
 .home-page .navbar:not(.scrolled) .hamburger .line { stroke: white; }
 
 .mobile-menu {
@@ -278,7 +272,6 @@ button { cursor: pointer; font-family: inherit; }
 .home-page .navbar .btn { background: var(--primary); color: white; }
 .home-page .navbar .btn:hover { background: #8b5c2c; color: white; }
 
-/* Home page — coffee button transparent state: white icon + text */
 .home-page .navbar:not(.scrolled) .btn-book {
   background: transparent;
   color: white !important;
@@ -294,7 +287,6 @@ button { cursor: pointer; font-family: inherit; }
   transform: translateY(-1px);
 }
 
-/* Home page — scrolled state */
 .home-page .navbar.scrolled { background: rgba(248, 246, 243, 0.95); }
 .home-page .navbar.scrolled .nav-links a:not(.btn) { color: var(--foreground); }
 .home-page .navbar.scrolled .nav-links a:not(.btn):hover { color: var(--primary); }
@@ -302,21 +294,17 @@ button { cursor: pointer; font-family: inherit; }
 .home-page .navbar.scrolled .btn { color: white; }
 .home-page .navbar.scrolled .btn:hover { background: #8b5c2c; color: white; }
 
-/* Home page — scrolled: coffee button becomes solid brown pill */
-.home-page .navbar.scrolled .btn-book{
+.home-page .navbar.scrolled .btn-book {
   background: var(--primary);
   color: rgb(0, 0, 0) !important;
-  border: 2px solid rgba(248, 246, 243, 0.95) ;
+  border: 2px solid rgba(248, 246, 243, 0.95);
   border-radius: 999px;
 }
-
-
-.home-page .navbar.scrolled .btn-book:hover  {
+.home-page .navbar.scrolled .btn-book:hover {
   background: #8b5c2c;
   color: #8b5c2c !important;
   transform: translateY(-1px);
   border-color: #8b5c2c;
-
 }
 
 
@@ -329,7 +317,6 @@ button { cursor: pointer; font-family: inherit; }
   object-fit: contain;
   transition: all 0.3s ease;
 }
-
 .navbar-brand:hover .logo-img {
   transform: scale(1.05);
   opacity: 0.9;
@@ -337,36 +324,43 @@ button { cursor: pointer; font-family: inherit; }
 
 
 /* ===== 5. HERO ===== */
-
+ 
 .hero {
   position: relative;
   height: 100vh;
   min-height: 600px;
   display: flex;
   align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
-
+ 
+.hero .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+ 
 .hero-bg { position: absolute; inset: 0; }
 .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
 .hero-overlay { position: absolute; inset: 0; background: rgba(46, 34, 25, 0.5); }
-
-.hero-content { position: relative; z-index: 10; max-width: 640px; }
-
+ 
+.hero-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  text-align: center;
+}
+ 
 .hero-content h1 {
-  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  font-size: clamp(3rem, 8vw, 6rem);
   font-weight: 700;
   color: var(--primary-foreground);
-  margin-bottom: 1.5rem;
-  line-height: 1.15;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 24px rgba(0,0,0,0.25);
 }
-
-.hero-content p {
-  font-size: 1.125rem;
-  color: rgba(248, 246, 243, 0.9);
-  margin-bottom: 2rem;
-  line-height: 1.7;
-}
+ 
 
 
 /* ===== 6. SECTIONS & LAYOUT ===== */
@@ -381,7 +375,6 @@ button { cursor: pointer; font-family: inherit; }
 .page-header        { padding-top: 6rem; }
 .page-header .section { padding: 5rem 0; }
 
-/* "Leave a Review" button inside section-card */
 .section-card .btn.review { display: inline-block; margin-top: 1.5rem; color: #000; background-color: rgb(211, 211, 211); }
 
 
@@ -506,14 +499,11 @@ button { cursor: pointer; font-family: inherit; }
 .carousel-stars svg.filled  { fill: var(--cafe-gold); color: var(--cafe-gold); }
 .carousel-stars svg.empty   { fill: none; stroke: currentColor; opacity: 0.3; }
 
-/* Review text — clamp to 5 lines */
 .carousel-card .review-text {
   font-size: 0.875rem;
   line-height: 1.6;
   margin-bottom: 1rem;
   opacity: 0.9;
-
-  /* Line clamp — limits text to 5 lines */
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 5;
@@ -555,7 +545,6 @@ button { cursor: pointer; font-family: inherit; }
 .carousel-dot.active      { width: 1.5rem; opacity: 1; }
 .carousel-dot:not(.active){ width: 0.5rem; opacity: 0.3; }
 
-/* Quote decoration & badges */
 .quote-icon {
   font-size: 3rem;
   opacity: 0.1;
@@ -722,12 +711,12 @@ button { cursor: pointer; font-family: inherit; }
 }
 
 .image-upload-area img {
-  width: 60px;      
-  height: 60px;      
-  object-fit: cover;  
-  border-radius: 8px; 
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
   display: block;
-  margin: 0 auto;    
+  margin: 0 auto;
 }
 
 .form-group input:focus,
@@ -750,30 +739,29 @@ button { cursor: pointer; font-family: inherit; }
 
 .footer { background: var(--primary); color: var(--primary-foreground); padding: 4rem 0 0; }
 .footer-grid { display: grid; gap: 2.5rem; }
- 
+
 .footer-brand { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
 .footer-brand svg  { width: 24px; height: 24px; }
 .footer-brand span { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; }
- 
+
 .footer p  { font-size: 0.875rem; opacity: 0.8; line-height: 1.7; }
 .footer h4 { font-family: 'Playfair Display', serif; font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; }
- 
+
 .footer-links { display: flex; flex-direction: column; gap: 0.5rem; }
 .footer-links a       { font-size: 0.875rem; opacity: 0.8; transition: opacity 0.2s; }
 .footer-links a:hover { opacity: 1; }
- 
+
 .footer-contact      { display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.875rem; opacity: 0.8; }
 .footer-contact-item { display: flex; align-items: center; gap: 0.5rem; }
 .footer-contact-item svg { width: 16px; height: 16px; flex-shrink: 0; }
- 
+
 /* ===== FOOTER SOCIAL ICONS ===== */
 .footer-social {
   display: flex;
   gap: 0.75rem;
   margin-top: 0.75rem;
 }
- 
-/* Desktop — fill bubble effect */
+
 .footer-social-btn {
   position: relative;
   overflow: hidden;
@@ -788,12 +776,12 @@ button { cursor: pointer; font-family: inherit; }
   text-decoration: none;
   transition: color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
- 
+
 .footer-social-btn:hover {
   color: white;
   box-shadow: 3px 2px 45px rgba(0,0,0,0.2);
 }
- 
+
 .footer-social-btn svg {
   position: relative;
   z-index: 1;
@@ -802,8 +790,7 @@ button { cursor: pointer; font-family: inherit; }
   stroke: currentColor;
   transition: stroke 0.3s;
 }
- 
-/* Fill layer — rises from bottom on hover */
+
 .footer-social-fill {
   position: absolute;
   bottom: 0;
@@ -814,16 +801,13 @@ button { cursor: pointer; font-family: inherit; }
   z-index: 0;
 }
 .footer-social-btn:hover .footer-social-fill { height: 100%; }
- 
-/* Instagram gradient fill */
+
 .social-instagram .footer-social-fill {
   background: linear-gradient(45deg, #405de6, #5b51db, #b33ab4, #e1306c, #fd1f1f);
 }
- 
-/* Facebook fill */
+
 .social-facebook .footer-social-fill { background: #4267B2; }
- 
-/* Tooltip */
+
 .footer-social-tooltip {
   position: absolute;
   top: -38px;
@@ -846,8 +830,7 @@ button { cursor: pointer; font-family: inherit; }
   visibility: visible;
   top: -44px;
 }
- 
-/* Mobile/tablet — strip animation, show simple icons only */
+
 @media (max-width: 768px) {
   .footer-social-btn {
     background: transparent;
@@ -859,7 +842,7 @@ button { cursor: pointer; font-family: inherit; }
   .footer-social-btn:hover { box-shadow: none; }
   .footer-social-btn svg { width: 18px; height: 18px; }
 }
- 
+
 .footer-bottom {
   margin-top: 3rem;
   border-top: 1px solid rgba(248, 246, 243, 0.2);
@@ -867,8 +850,6 @@ button { cursor: pointer; font-family: inherit; }
   text-align: center;
 }
 .footer-bottom p { font-size: 0.75rem; opacity: 0.6; }
- 
- 
 
 
 /* ===== 16. ANIMATIONS ===== */
@@ -900,12 +881,12 @@ button { cursor: pointer; font-family: inherit; }
 .find-us p  { color: var(--muted-foreground); font-size: 1.125rem; }
 
 
-/* ===== 18. PRELOADER ===== */
+/* ===== 18. PRELOADER  (index.html — first visit only) ===== */
 
 #preloader {
   position: fixed;
   inset: 0;
-  background-color: #f9f9f9;
+  background-color: hsl(36, 33%, 97%);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -924,23 +905,77 @@ button { cursor: pointer; font-family: inherit; }
   margin-bottom: 20px;
 }
 
-#preloader h1 { font-size: 2rem; margin-bottom: 10px; color: #333; }
-#preloader p  { font-size: 1rem; color: #555; margin-bottom: 20px; }
-
-#main-content { display: none; }
-body.loaded #main-content { display: block; }
+#preloader h1 { font-size: 2rem; margin-bottom: 10px; color: var(--foreground); }
+#preloader p  { font-size: 1rem; color: var(--muted-foreground); margin-bottom: 20px; }
 
 .dots { display: flex; gap: 5px; justify-content: center; }
 
 .dot {
   width: 10px;
   height: 10px;
-  background-color: #007bff;
+  background-color: var(--primary);
   border-radius: 50%;
   animation: bounce 1s infinite;
 }
 .dot:nth-child(2) { animation-delay: 0.2s; }
 .dot:nth-child(3) { animation-delay: 0.4s; }
+
+@media (max-width: 600px) {
+  #preloader img { max-width: 150px; }
+  #preloader h1  { font-size: 1.5rem; }
+  #preloader p   { font-size: 0.9rem; }
+}
+
+
+/* ===== 19. PAGE TRANSITION LOADER ===== */
+/* Small centered spinner that appears when navigating between
+   pages and the next page takes more than 200 ms to load.     */
+
+#page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  background: rgba(248, 246, 243, 0.85);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+#page-loader.pl-visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.pl-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pl-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: pl-spin 0.75s linear infinite;
+}
+
+@keyframes pl-spin {
+  to { transform: rotate(360deg); }
+}
+
+.pl-text {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  margin: 0;
+}
 
 
 /* ===== 20. REVIEW FORM ===== */
@@ -960,24 +995,16 @@ body.loaded #main-content { display: block; }
   cursor: pointer;
   user-select: none;
 }
-/* Hover preview — orange, slightly bigger */
 .star-btn.hover {
   color: #f4a822 !important;
   transform: scale(1.25);
 }
-/* Clicked/selected — solid gold */
 .star-btn.active {
   color: #f4a822 !important;
   transform: scale(1.1);
 }
-/* When hovering over a star, active stars that are NOT in hover range go slightly dim */
-.star-rating-input:hover .star-btn:not(.hover) {
-  color: #ccc;
-}
-/* But keep active stars gold when not hovering at all */
-.star-rating-input:not(:hover) .star-btn.active {
-  color: #f4a822 !important;
-}
+.star-rating-input:hover .star-btn:not(.hover) { color: #ccc; }
+.star-rating-input:not(:hover) .star-btn.active { color: #f4a822 !important; }
 
 .rating-text {
   margin-top: 0.75rem;
@@ -991,7 +1018,6 @@ body.loaded #main-content { display: block; }
   transition: color 0.3s;
 }
 
-/* Rating icon — inline SVG wrapper */
 .rating-icon {
   width: 24px;
   height: 24px;
@@ -1004,7 +1030,6 @@ body.loaded #main-content { display: block; }
   transition: stroke 0.3s;
 }
 
-/* Animations — each rating gets its own personality */
 @keyframes r-pulldown  { 0%,100%{transform:translateY(0)}   50%{transform:translateY(3px)} }
 @keyframes r-rock      { 0%,100%{transform:rotate(0deg)}    33%{transform:rotate(-8deg)} 66%{transform:rotate(8deg)} }
 @keyframes r-bob       { 0%,100%{transform:translateY(0)}   50%{transform:translateY(-4px)} }
@@ -1047,7 +1072,6 @@ body.loaded #main-content { display: block; }
 
 /* ===== 21. RESPONSIVE ===== */
 
-/* Grid breakpoints */
 @media (min-width: 640px) {
   .grid-2 { grid-template-columns: repeat(2, 1fr); }
   .grid-3 { grid-template-columns: repeat(2, 1fr); }
@@ -1059,7 +1083,6 @@ body.loaded #main-content { display: block; }
   .grid-4 { grid-template-columns: repeat(4, 1fr); }
 }
 
-/* About two-column layout */
 @media (min-width: 768px) {
   .about-grid       { grid-template-columns: 1fr 1fr; }
   .footer-grid      { grid-template-columns: repeat(3, 1fr); }
@@ -1068,7 +1091,6 @@ body.loaded #main-content { display: block; }
   .carousel-next    { right: 3rem; }
 }
 
-/* Navbar: hide links, show hamburger */
 @media (max-width: 768px) {
   .nav-links  { display: none; }
   .hamburger  { display: block; }
@@ -1076,12 +1098,6 @@ body.loaded #main-content { display: block; }
 }
 
 @media (max-width: 480px) {
-  .logo-img { height: 28px; }
+  .logo-img { height: 30px; }
 }
 
-/* Preloader small screen */
-@media (max-width: 600px) {
-  #preloader img { max-width: 150px; }
-  #preloader h1  { font-size: 1.5rem; }
-  #preloader p   { font-size: 0.9rem; }
-}
