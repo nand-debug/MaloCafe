@@ -14,17 +14,59 @@
 
 <body class="home-page">
 
-   <!-- Preloader -->
-  <div id="preloader">
-    <img src="images/loading.gif" alt="Loading...">
-    <h1>Loading your site</h1>
-    <p>Please wait a moment…</p>
-    <div class="dots">
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
+<div class="preloader" id="preloader" aria-hidden="true">
+  <div class="bg-grain"></div>
+  <div class="bg-rings"></div>
+ 
+  <div class="marquee row1">
+    <span>ESPRESSO · LATTE · MOCHA · ESPRESSO · LATTE · MOCHA ·</span>
+    <span>ESPRESSO · LATTE · MOCHA · ESPRESSO · LATTE · MOCHA ·</span>
+  </div>
+  <div class="marquee row2">
+    <span>FRESH ROAST · SLOW BREW · FRESH ROAST · SLOW BREW ·</span>
+    <span>FRESH ROAST · SLOW BREW · FRESH ROAST · SLOW BREW ·</span>
+  </div>
+ 
+  <div class="stage">
+    <div class="scene">
+      <div class="ring"></div>
+      <div class="ring inner"></div>
+    
+ 
+      <div class="bean b1"></div><div class="bean b2"></div>
+      <div class="bean b3"></div><div class="bean b4"></div>
+      <div class="bean b5"></div><div class="bean b6"></div>
+ 
+      <div class="cup">
+        <div class="steam"><span></span><span></span><span></span></div>
+        <div class="cup-body">
+          <div class="pour"></div>
+          <div class="liquid">
+            <div class="drop d1"></div>
+            <div class="drop d2"></div>
+            <div class="drop d3"></div>
+          </div>
+        </div>
+        <div class="handle"></div>
+        <div class="saucer"></div>
+      </div>
     </div>
   </div>
+ 
+  <div class="word-wrap">
+    <div class="word" aria-label="MALOCAFE">
+      <span>M</span><span>A</span><span>L</span><span>O</span>
+      <span>C</span><span>A</span><span>F</span><span>E</span>
+    </div>
+    <div class="tag">CRAFTED · ROASTED · SERVED</div>
+  </div>
+ 
+  <div class="progress-wrap">
+    <span>LOADING</span>
+    <div class="bar"><i></i></div>
+    <span class="pct" id="pct">0%</span>
+  </div>
+</div>
 
   <!-- Navbar -->
   <nav class="navbar">
@@ -67,12 +109,17 @@
   </nav>
 
   <!-- Hero -->
-   <section class="hero">
+<section class="hero">
     <div class="hero-bg">
-      <img src="images/bg.png" alt="Malo Cafe interior">
+      <picture>
+        <!-- Mobile phones (portrait & small landscape) -->
+        <source srcset="images/bg-phone.jpg" media="(max-width: 640px)">
+        <!-- Tablets and desktops -->
+        <img src="images/bg_2.jpg" alt="Malo Cafe interior">
+      </picture>
       <div class="hero-overlay"></div>
     </div>
-    <div class="container">
+<div class="container">
       <div class="hero-content animate-in">
         <h1>Welcome to Malo Cafe</h1>
       </div>
@@ -127,28 +174,28 @@
       </div>
       <div class="grid-3">
         <div class="menu-card animate-in" data-delay="0">
-          <div class="img-wrap"><img src="images/Mousse Cake.jpg" alt="Mousse Cake"></div>
-          <div class="info"><h3>Mousse Cake</h3></div>
+          <div class="img-wrap"><img src="images/braised-lamb-shank.jpg" alt="Braised Lamb Shank"></div>
+          <div class="info"><h3>Braised Lamb Shank</h3></div>
         </div>
         <div class="menu-card animate-in" data-delay="0.08">
-          <div class="img-wrap"><img src="images/eggs-breakfast.jpg" alt="Classic Eggs Breakfast"></div>
-          <div class="info"><h3>Classic Eggs Breakfast</h3></div>
+          <div class="img-wrap"><img src="images/Breakfast Steak.jpg" alt="Breakfast Steak"></div>
+          <div class="info"><h3>Breakfast Steak</h3></div>
         </div>
         <div class="menu-card animate-in" data-delay="0.16">
           <div class="img-wrap"><img src="images/burger.jpg" alt="Gourmet Burger"></div>
           <div class="info"><h3>Gourmet Burger</h3></div>
         </div>
         <div class="menu-card animate-in" data-delay="0.24">
-          <div class="img-wrap"><img src="images/cappuccino.jpg" alt="Specialty Latte"></div>
-          <div class="info"><h3>Cappuccino</h3></div>
+          <div class="img-wrap"><img src="images/Tomahawk steak.jpg" alt="Tomahawk steak"></div>
+          <div class="info"><h3>Tomahawk steak</h3></div>
         </div>
         <div class="menu-card animate-in" data-delay="0.32">
-          <div class="img-wrap"><img src="images/smoothies.jpg" alt="watermelon fizz"></div>
-          <div class="info"><h3>Watermelon fizz</h3></div>
+          <div class="img-wrap"><img src="images/avocado chicken melt.jpg" alt="avocado chicken melt"></div>
+          <div class="info"><h3>Avocado Chicken Melt</h3></div>
         </div>
         <div class="menu-card animate-in" data-delay="0.4">
-          <div class="img-wrap"><img src="images/breakfast-spread.jpg" alt="Brunch Platter"></div>
-          <div class="info"><h3>Brunch Platter</h3></div>
+          <div class="img-wrap"><img src="images/breakfast-spread.jpg" alt="Seafood Pasta"></div>
+          <div class="info"><h3>Seafood Pasta</h3></div>
         </div>
       </div>
     </div>

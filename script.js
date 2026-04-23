@@ -8,7 +8,7 @@
 // ── Apps Script endpoints ────────────────────────────────────
 var BOOKING_URL = 'https://script.google.com/macros/s/AKfycbyMddgpN0hEno63kTVnmjlayaLhzRFZohDPsz3bzhRwJOSDIiMJ5XPSxF4qaYQZo7iE/exec';
 var REVIEW_URL  = 'https://script.google.com/macros/s/AKfycbyFrrnXWnKSV-eeg1DUAWY3M687tMNjFGg0l6R85zvaFk3BC3757gZOCFb4-ex1iHia/exec';
-
+var GALLERY_URL = 'https://script.google.com/macros/s/AKfycby0REjl38yU9fw04QaMrZQmgA7zlK-W-1TG3AkRRmS-egvaZgzpGthPxcU5P24HLae6/exec'; 
 
 // ============================================================
 //  NAVBAR SCROLL
@@ -80,15 +80,37 @@ document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(function (link
 //  PRELOADER
 // ============================================================
 window.addEventListener('load', function () {
+  // Update progress percentage
+  const pct = document.getElementById('pct');
+  const start = performance.now();
+  const dur = 5500;
+ 
+  function tick(now) {
+    const t = Math.min(1, (now - start) / dur);
+    pct.textContent = Math.round(t * 100) + '%';
+    if (t < 1) requestAnimationFrame(tick);
+  }
+ 
+  requestAnimationFrame(tick);
+ 
+  // Hide preloader after animation completes
   setTimeout(function () {
-    var preloader = document.getElementById('preloader');
+    const preloader = document.getElementById('preloader');
     if (!preloader) return;
-    preloader.classList.add('hidden');
+    
+    // Smooth fade out animation
+    preloader.style.opacity = '0';
+    preloader.style.transition = 'opacity 0.8s ease-out';
+    preloader.style.pointerEvents = 'none';
+    
+    // Add smooth fade-in to body content
+    document.body.classList.add('loaded');
+    
+    // Remove from DOM after fade
     setTimeout(function () {
       preloader.style.display = 'none';
-      document.body.classList.add('loaded');
-    }, 500);
-  }, 1500);
+    }, 800);
+  }, 3600);
 });
 
 // ============================================================
@@ -381,55 +403,6 @@ if (!navigator.onLine) {
 
 
 // ============================================================
-//  GALLERY — loads approved customer photos from Apps Script
-// ============================================================
-(function () {
-  var galleryGrid = document.getElementById('gallery-grid');
-  if (!galleryGrid) return;
-
-  function makeSquare(url) {
-    return url.replace(
-      '/upload/',
-      '/upload/w_600,h_600,c_fill,g_auto,q_auto,f_auto/'
-    );
-  }
-
-  function loadGallery() {
-    fetch(REVIEW_URL + '?action=gallery')
-      .then(function (res) { return res.json(); })
-      .then(function (photos) {
-        if (!Array.isArray(photos) || !photos.length) return;
-
-        photos.forEach(function (photo) {
-          var square = makeSquare(photo.url);
-
-          var div = document.createElement('div');
-          div.className = 'gallery-item animate-in';
-
-          div.innerHTML =
-            '<img src="' + square + '" alt="Customer photo by ' + (photo.author || 'Guest') + '" loading="lazy">' +
-            '<div class="gallery-overlay">' +
-              '<div class="caption">' +
-                '<span class="cat">Customer Photo</span>' +
-                '<p class="name">📷 ' + (photo.author || 'Guest') + '</p>' +
-              '</div>' +
-            '</div>';
-
-          galleryGrid.appendChild(div);
-
-          if (window.scrollObserver) {
-            scrollObserver.observe(div);
-          }
-        });
-      })
-      .catch(function () {});
-  }
-
-  loadGallery();
-})();
-
-
-// ============================================================
 //  REVIEW FORM  (review.html)
 // ============================================================
 (function () {
@@ -593,5 +566,250 @@ if (!navigator.onLine) {
   }
 })();
 
+(function () {
+ 
+  // ── DOM refs ─────────────────────────────────────────────
+  var cafeGrid     = document.getElementById('cafe-grid');
+  var customerGrid = document.getElementById('customer-grid');
+  var lightbox     = document.getElementById('gallery-lightbox');
+  var lbImg        = document.getElementById('lb-img');
+  var lbName       = document.getElementById('lb-name');
+  var lbCat        = document.getElementById('lb-cat');
+  var lbClose      = document.getElementById('lb-close');
+ 
+  // Exit if not on gallery page
+  if (!cafeGrid || !customerGrid) return;
+ 
+  // ── Active filter ─────────────────────────────────────────
+  var activeFilter = 'all';
+ 
+  // ── Cloudinary transform helper ───────────────────────────
+  // Ensures every photo is served as a square 600×600 crop
+  function cloudinarySquare(url) {
+    if (!url || !url.includes('/upload/')) return url;
+    return url.replace(
+      '/upload/',
+      '/upload/w_600,h_600,c_fill,g_auto,q_auto,f_auto/'
+    );
+  }
+ 
+  // ── Build a gallery item element ──────────────────────────
+  function makeItem(opts) {
+    // opts: { url, name, cat, filterAttr, badge, badgeClass, delay }
+    var div = document.createElement('div');
+    div.className = 'gallery-item animate-in';
+    div.setAttribute('data-filter', opts.filterAttr || 'cafe');
+    if (opts.delay) div.setAttribute('data-delay', opts.delay);
+ 
+    var squareUrl = cloudinarySquare(opts.url);
+ 
+    var badgeHtml = opts.badge
+      ? '<span class="' + (opts.badgeClass || 'owner-badge') + '">' + opts.badge + '</span>'
+      : '';
+ 
+    div.innerHTML =
+      '<img src="' + squareUrl + '" alt="' + esc(opts.name) + '" loading="lazy">' +
+      badgeHtml +
+      '<div class="gallery-overlay">' +
+        '<div class="caption">' +
+          '<span class="cat">' + esc(opts.cat) + '</span>' +
+          '<p class="name">' + esc(opts.name) + '</p>' +
+        '</div>' +
+      '</div>';
+ 
+    // Show loading state until image loads
+    var img = div.querySelector('img');
+    img.addEventListener('load',  function () { div.classList.add('img-loaded'); });
+    img.addEventListener('error', function () { div.style.opacity = '0.4'; });
+ 
+    // Lightbox on click
+    div.addEventListener('click', function () {
+      openLightbox(opts.url, opts.name, opts.cat);
+    });
+ 
+    // Register with scroll observer from script.js
+    if (typeof scrollObserver !== 'undefined') {
+      scrollObserver.observe(div);
+    }
+ 
+    return div;
+  }
+ 
+  // ── Lightbox ──────────────────────────────────────────────
+  function openLightbox(url, name, cat) {
+    lbImg.src    = url;
+    lbName.textContent = name || '';
+    lbCat.textContent  = cat  || '';
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+ 
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lbImg.src = '';
+    document.body.style.overflow = '';
+  }
+ 
+  if (lbClose)  lbClose.addEventListener('click', closeLightbox);
+  if (lightbox) lightbox.addEventListener('click', function (e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+ 
+  // ── Filter tabs ───────────────────────────────────────────
+  document.querySelectorAll('.gallery-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.gallery-tab').forEach(function (t) {
+        t.classList.remove('active');
+      });
+      tab.classList.add('active');
+      activeFilter = tab.dataset.filter;
+      applyFilter();
+    });
+  });
+ 
+  function applyFilter() {
+    var cafeSection     = document.getElementById('cafe-section');
+    var customerSection = document.getElementById('customer-section');
+    var divider         = document.querySelector('.gallery-section-divider');
+ 
+    // Show/hide entire sections based on filter
+    var showCafe     = (activeFilter === 'all' || activeFilter === 'cafe' || activeFilter === 'food' || activeFilter === 'interior');
+    var showCustomer = (activeFilter === 'all' || activeFilter === 'customer');
+ 
+    if (cafeSection)     cafeSection.style.display     = showCafe     ? '' : 'none';
+    if (customerSection) customerSection.style.display = showCustomer ? '' : 'none';
+    if (divider)         divider.style.display         = (showCafe && showCustomer) ? '' : 'none';
+ 
+    // Within the cafe grid, filter by data-filter attribute
+    if (showCafe && activeFilter !== 'all' && activeFilter !== 'cafe') {
+      cafeGrid.querySelectorAll('.gallery-item').forEach(function (item) {
+        var filters = (item.getAttribute('data-filter') || '').split(' ');
+        item.classList.toggle('gl-hidden', !filters.includes(activeFilter));
+      });
+    } else {
+      cafeGrid.querySelectorAll('.gallery-item').forEach(function (item) {
+        item.classList.remove('gl-hidden');
+      });
+    }
+  }
+ 
+  // ── Fetch owner/cafe photos from Apps Script ──────────────
+  // These are uploaded by the owner from admin-gallery.html
+  // and stored in Cloudinary under the "malo_cafe_owner" folder.
+  function fetchOwnerPhotos() {
+    if (typeof BOOKING_URL === 'undefined') return;
+ 
+fetch(GALLERY_URL + '?action=getOwnerPhotos&_=' + Date.now())
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (!data.success || !Array.isArray(data.photos) || !data.photos.length) return;
+ 
+        var delay = 0.54; // start after static items
+        data.photos.forEach(function (photo) {
+          var catMap = {
+            Food: 'cafe food', Drinks: 'cafe food',
+            Coffee: 'cafe food', Interior: 'cafe interior',
+            Events: 'cafe'
+          };
+          var filterAttr = catMap[photo.category] || 'cafe';
+ 
+          var item = makeItem({
+            url:        photo.url,
+            name:       photo.title || photo.category || 'Cafe Photo',
+            cat:        photo.category || 'Cafe',
+            filterAttr: filterAttr,
+            badge:      'New',
+            badgeClass: 'owner-badge',
+            delay:      delay.toFixed(2)
+          });
+ 
+          cafeGrid.appendChild(item);
+          delay += 0.06;
+        });
+      })
+      .catch(function () {
+        // Silently fail — static photos are already shown
+      });
+  }
+ 
+  // ── Fetch customer photos from review Apps Script ─────────
+  // These come from approved reviews that also had an approved photo.
+  function fetchCustomerPhotos() {
+    if (typeof REVIEW_URL === 'undefined') return;
+ 
+    fetch(REVIEW_URL + '?action=gallery&_=' + Date.now())
+      .then(function (res) { return res.json(); })
+      .then(function (photos) {
+        // Remove skeleton placeholders
+        customerGrid.innerHTML = '';
+ 
+        if (!Array.isArray(photos) || !photos.length) {
+          customerGrid.innerHTML =
+            '<div class="customer-empty">' +
+              '<span style="font-size:2rem;">📷</span>' +
+              '<p>No customer photos yet. Be the first to share your experience!</p>' +
+              '<a href="review.html">Leave a Review with Photo</a>' +
+            '</div>';
+          return;
+        }
+ 
+        var delay = 0;
+        photos.forEach(function (photo) {
+          var item = makeItem({
+            url:        photo.url,
+            name:       photo.author ? 'Photo by ' + photo.author : 'Customer Photo',
+            cat:        'Customer',
+            filterAttr: 'customer',
+            badge:      '📷 ' + (photo.author || 'Guest'),
+            badgeClass: 'customer-badge',
+            delay:      delay.toFixed(2)
+          });
+ 
+          customerGrid.appendChild(item);
+          delay += 0.06;
+        });
+      })
+      .catch(function () {
+        // Remove skeletons, show empty state
+        customerGrid.innerHTML =
+          '<div class="customer-empty">' +
+            '<span style="font-size:2rem;">📷</span>' +
+            '<p>Could not load customer photos right now.</p>' +
+            '<a href="review.html">Leave a Review</a>' +
+          '</div>';
+      });
+  }
+ 
+  // ── Escape HTML ───────────────────────────────────────────
+  function esc(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+ 
+  // ── Init ──────────────────────────────────────────────────
+  fetchOwnerPhotos();
+  fetchCustomerPhotos();
+ 
+})();
 
+setInterval(fetchOwnerPhotos, 10000); // refresh every 10s
+// ============================================================
+//  ABOUT IMAGE SLIDESHOW
+// ============================================================
+(function () {
+  var slides = document.querySelectorAll(".slideshow .slide");
+  if (!slides.length) return; // prevents errors on other pages
 
+  var index = 0;
+
+  function showNextSlide() {
+    slides[index].classList.remove("active");
+    index = (index + 1) % slides.length;
+    slides[index].classList.add("active");
+  }
+
+  // Start slideshow
+  setInterval(showNextSlide, 5000);
+})();

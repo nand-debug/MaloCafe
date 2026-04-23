@@ -4,14 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gallery – Malo Cafe</title>
-  <meta name="description" content="Browse photos of Malo Cafe's food, drinks, and cozy interior in Suva, Fiji.">
+  <meta name="description" content="Browse photos of Malo Cafe's food, drinks, cozy interior, and customer moments in Suva, Fiji.">
   <link rel="stylesheet" href="style.css">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon_io/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon_io/favicon-16x16.png">
-<link rel="manifest" href="images/favicon_io/site.webmanifest">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon_io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon_io/favicon-16x16.png">
+  <link rel="manifest" href="images/favicon_io/site.webmanifest">
 </head>
 <body>
+
   <nav class="navbar">
     <div class="container">
       <a href="index.html" class="navbar-brand">
@@ -23,18 +24,18 @@
         <a href="gallery.html">Gallery</a>
         <a href="contact.html">Contact</a>
         <a href="booking.html" class="btn-book pill-btn">
-        <svg class="cup-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path class="steam-1" d="M7 4 Q6 2.5 7 1"/>
-          <path class="steam-2" d="M10 4 Q9 2.5 10 1"/>
-          <path class="steam-3" d="M13 4 Q12 2.5 13 1"/>
-          <path d="M4 6 h13 l-1.5 10 a1 1 0 0 1-1 0.9 H6.5 a1 1 0 0 1-1-0.9 Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="none"/>
-          <path d="M17 8.5 q3 0 3 2.5 t-3 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
-          <path d="M3 18 Q10.5 20 18 18" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
-        </svg>
-        Book a Table
-      </a>
+          <svg class="cup-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path class="steam-1" d="M7 4 Q6 2.5 7 1"/>
+            <path class="steam-2" d="M10 4 Q9 2.5 10 1"/>
+            <path class="steam-3" d="M13 4 Q12 2.5 13 1"/>
+            <path d="M4 6 h13 l-1.5 10 a1 1 0 0 1-1 0.9 H6.5 a1 1 0 0 1-1-0.9 Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="none"/>
+            <path d="M17 8.5 q3 0 3 2.5 t-3 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+            <path d="M3 18 Q10.5 20 18 18" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+          </svg>
+          Book a Table
+        </a>
       </div>
-<label class="hamburger" aria-label="Toggle menu">
+      <label class="hamburger" aria-label="Toggle menu">
         <input type="checkbox" id="hamburger-check">
         <svg viewBox="0 0 32 32">
           <path class="line line-top-bottom" d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"></path>
@@ -52,42 +53,111 @@
   </nav>
 
   <div class="page-header">
+
+    <!-- Header -->
     <section class="section section-card">
       <div class="container" style="text-align:center;">
         <div class="animate-in">
           <h1 class="section-title">Gallery</h1>
           <p style="color:var(--muted-foreground);max-width:32rem;margin:0 auto;font-size:1.125rem;">A glimpse into the Malo Cafe experience</p>
         </div>
-      </div>
-    </section>
-        <section class="section">
-      <div class="container">
-        <div class="grid-3" id="gallery-grid">
-          <div class="gallery-item animate-in" data-delay="0"><img src="images/cappuccino.jpg" alt="cappuccino"><div class="gallery-overlay"><div class="caption"><span class="cat">Coffee</span><p class="name">cappuccino</p></div></div></div>
-          <div class="gallery-item animate-in" data-delay="0.06"><img src="images/pancakes.jpg" alt="Berry pancakes"><div class="gallery-overlay"><div class="caption"><span class="cat">Food</span><p class="name">Berry pancakes</p></div></div></div>
-          <div class="gallery-item animate-in" data-delay="0.12"><img src="images/bg.png" alt="Cafe interior"><div class="gallery-overlay"><div class="caption"><span class="cat">Interior</span><p class="name">Cafe interior</p></div></div></div>
-          <div class="gallery-item animate-in" data-delay="0.18"><img src="images/smoothies.jpg" alt="Tropical smoothies"><div class="gallery-overlay"><div class="caption"><span class="cat">Drinks</span><p class="name">Watermelon fizz</p></div></div></div>
-          <div class="gallery-item animate-in" data-delay="0.24"><img src="images/eggs-breakfast.jpg" alt="Eggs breakfast"><div class="gallery-overlay"><div class="caption"><span class="cat">Food</span><p class="name">Eggs breakfast</p></div></div></div>
-          <div class="gallery-item animate-in" data-delay="0.3"><img src="images/outdoor-seating.jpg" alt="Outdoor seating"><div class="gallery-overlay"><div class="caption"><span class="cat">Interior</span><p class="name">Outdoor seating</p></div></div></div>
-          <div class="gallery-item animate-in" data-delay="0.36"><img src="images/burger.jpg" alt="Gourmet burger"><div class="gallery-overlay"><div class="caption"><span class="cat">Food</span><p class="name">Gourmet burger</p></div></div></div>
-          <div class="gallery-item animate-in" data-delay="0.42"><img src="images/Mousse Cake.jpg" alt="Malo Cafe"><div class="gallery-overlay"><div class="caption"><span class="cat">Food</span><p class="name">Mousse Cake</p></div></div></div>
-          <div class="gallery-item animate-in" data-delay="0.48"><img src="images/breakfast-spread.jpg" alt="Brunch spread"><div class="gallery-overlay"><div class="caption"><span class="cat">Food</span><p class="name">Brunch spread</p></div></div></div>
-        
         </div>
-      </div>
     </section>
-  </div>
+
+    <!-- Gallery body -->
+    <section class="section">
+      <div class="container">
+
+        <!-- ── SECTION 1: OUR CAFE ── -->
+        <div id="cafe-section">
+          <div class="gallery-section-label animate-in">
+            <h2>Our Cafe</h2>
+            <span class="gl-pill gl-pill-cafe">By Malo Cafe</span>
+          </div>
+          <div class="grid-3" id="cafe-grid">
+
+            <!-- Static owner photos always shown -->
+            <div class="gallery-item animate-in" data-filter="cafe food" data-delay="0">
+              <img src="images/coffee.jpg" alt="Cappuccino" loading="lazy">
+              <div class="gallery-overlay"><div class="caption"><span class="cat">Coffee</span><p class="name">Cappuccino</p></div></div>
+            </div>
+            <div class="gallery-item animate-in" data-filter="cafe food" data-delay="0.06">
+              <img src="images/fresh veggies burger.jpg" alt="Burger" loading="lazy">
+              <div class="gallery-overlay"><div class="caption"><span class="cat">Food</span><p class="name">Burger</p></div></div>
+            </div>
+            <div class="gallery-item animate-in" data-filter="cafe interior" data-delay="0.12">
+              <img src="images/cafe-interior.jpg" alt="Cafe interior" loading="lazy">
+              <div class="gallery-overlay"><div class="caption"><span class="cat">Interior</span><p class="name">Cafe Interior</p></div></div>
+            </div>
+            <div class="gallery-item animate-in" data-filter="cafe food" data-delay="0.18">
+              <img src="images/avocado chicken melt.jpg" alt="Watermelon fizz" loading="lazy">
+              <div class="gallery-overlay"><div class="caption"><span class="cat">Food</span><p class="name">Avocado Chicken Melt</p></div></div>
+            </div>
+            <div class="gallery-item animate-in" data-filter="cafe food" data-delay="0.24">
+              <img src="images/Tomahawk steak.jpg" alt="Eggs breakfast" loading="lazy">
+              <div class="gallery-overlay"><div class="caption"><span class="cat">Food</span><p class="name">Tomahawk Steak</p></div></div>
+            </div>
+            <div class="gallery-item animate-in" data-filter="cafe interior" data-delay="0.3">
+              <img src="images/outdoor-seating.jpg" alt="Outdoor seating" loading="lazy">
+              <div class="gallery-overlay"><div class="caption"><span class="cat">Interior</span><p class="name">Outdoor Seating</p></div></div>
+            </div>
+            <div class="gallery-item animate-in" data-filter="cafe food" data-delay="0.36">
+              <img src="images/burger.jpg" alt="Gourmet burger" loading="lazy">
+              <div class="gallery-overlay"><div class="caption"><span class="cat">Food</span><p class="name">Gourmet Burger</p></div></div>
+            </div>
+            <div class="gallery-item animate-in" data-filter="cafe food" data-delay="0.42">
+              <img src="images/braised-lamb-shank.jpg" alt="Mousse Cake" loading="lazy">
+              <div class="gallery-overlay"><div class="caption"><span class="cat">Food</span><p class="name">Braised Lamb Shank</p></div></div>
+            </div>
+            <div class="gallery-item animate-in" data-filter="cafe food" data-delay="0.48">
+              <img src="images/Breakfast Steak.jpg" alt="Brunch" loading="lazy">
+              <div class="gallery-overlay"><div class="caption"><span class="cat">Food</span><p class="name">Breakfast</p></div></div>
+            </div>
+            <!-- Cloudinary owner photos appended here by gallery.js -->
+
+          </div>
+        </div>
+
+        <div class="gallery-section-divider"></div>
+
+        <!-- ── SECTION 2: CUSTOMER MOMENTS ── -->
+        <div id="customer-section">
+          <div class="gallery-section-label animate-in">
+            <h2>Customer Moments</h2>
+            <span class="gl-pill gl-pill-customer">Shared by Guests</span>
+          </div>
+          <!-- Skeleton cards shown while loading, replaced by gallery.js -->
+          <div class="grid-3" id="customer-grid">
+            <div class="gallery-skeleton"></div>
+            <div class="gallery-skeleton"></div>
+            <div class="gallery-skeleton"></div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
   </div>
 
-      <footer class="footer">
+  <!-- Lightbox -->
+  <div class="gallery-lightbox" id="gallery-lightbox">
+    <button class="lb-close" id="lb-close">✕</button>
+    <img id="lb-img" src="" alt="">
+    <div class="gallery-lightbox-meta">
+      <div class="lb-name" id="lb-name"></div>
+      <div class="lb-cat" id="lb-cat"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
     <div class="container">
       <div class="footer-grid">
         <div>
           <div class="footer-brand">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/>
-              <path d="M6 2v2"/></svg><span>Malo Cafe</span>
-            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>
+            <span>Malo Cafe</span>
+          </div>
           <p>Your cozy brunch spot in the heart of Suva, Fiji.</p>
         </div>
         <div>
@@ -104,16 +174,13 @@
           <h4>Contact</h4>
           <div class="footer-contact">
             <div class="footer-contact-item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                <circle cx="12" cy="10" r="3"/>
-              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
               <span>Grantham Road, Suva, Fiji</span>
             </div>
             <div class="footer-contact-item">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/>
-          </svg>
-          <span>+679 795 2690</span>
-        </div>            
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+              <span>+679 795 2690</span>
+            </div>
             <div class="footer-social">
               <a href="https://www.instagram.com/malocafefiji/" class="footer-social-btn social-instagram" aria-label="Instagram" target="_blank">
                 <div class="footer-social-fill"></div>
@@ -131,7 +198,12 @@
       </div>
       <div class="footer-bottom"><p>&copy; 2026 Malo Cafe. All rights reserved.</p></div>
     </div>
+
+
+
   </footer>
+
   <script src="script.js"></script>
+  
 </body>
 </html>
