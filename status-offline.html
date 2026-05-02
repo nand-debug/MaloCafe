@@ -33,7 +33,7 @@
 
         <div class="status-actions">
           <button class="status-button status-button-primary" onclick="retryNow()">Try again</button>
-          <a href="index.html" class="status-button status-button-secondary">Go home</a>
+          <a href="/index.html" class="status-button status-button-primary">Go home</a>
         </div>
       </div>
 
@@ -46,14 +46,14 @@
   window.addEventListener('online', function () {
     document.getElementById('status-meta').textContent = 'Connection restored! Redirecting…';
     setTimeout(function () {
-      window.location.href = 'index.html';
+      window.location.href = '/index.html';
     }, 800);
   });
 
   // Manual retry button
   function retryNow() {
     if (navigator.onLine) {
-      window.location.href = 'index.html';
+      window.location.href = '/index.html';
     } else {
       var meta = document.getElementById('status-meta');
       meta.textContent = 'Still offline. Please check your connection.';

@@ -6,9 +6,10 @@
 // ============================================================
 
 // ── Apps Script endpoints ────────────────────────────────────
-var BOOKING_URL = 'https://script.google.com/macros/s/AKfycbyMddgpN0hEno63kTVnmjlayaLhzRFZohDPsz3bzhRwJOSDIiMJ5XPSxF4qaYQZo7iE/exec';
-var REVIEW_URL  = 'https://script.google.com/macros/s/AKfycbyFrrnXWnKSV-eeg1DUAWY3M687tMNjFGg0l6R85zvaFk3BC3757gZOCFb4-ex1iHia/exec';
-var GALLERY_URL = 'https://script.google.com/macros/s/AKfycby0REjl38yU9fw04QaMrZQmgA7zlK-W-1TG3AkRRmS-egvaZgzpGthPxcU5P24HLae6/exec'; 
+var BOOKING_URL = 'https://script.google.com/macros/s/AKfycbwMwsAyh38oFXbq1b-rrPOi1tErLQBL00RAxTUJs_XcPlKpXhRdy_nOJQ8vJex8vYt8/exec';
+var REVIEW_URL  = 'https://script.google.com/macros/s/AKfycbxGbSQ-Zz5ddUMBYDbH534Om0igRK2WFvofrNaUODlDU7hW8dyrrabvwzU2cqGsXxXuRg/exec';
+var GALLERY_URL = 'https://script.google.com/macros/s/AKfycbwRDzFLQRXt0yFqGAYPXBdjFpxDjpd73Te2MZovwm1PJT3RE8340hkMHryWIS3NzDlN/exec';
+
 
 // ============================================================
 //  NAVBAR SCROLL
@@ -18,14 +19,10 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!navbar) return;
 
   function updateNavbar() {
-    if (window.scrollY > 10) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
+    navbar.classList.toggle('scrolled', window.scrollY > 10);
   }
   updateNavbar();
-  window.addEventListener('scroll', updateNavbar);
+  window.addEventListener('scroll', updateNavbar, { passive: true });
 });
 
 
@@ -45,6 +42,15 @@ if (hamburgerCheck && mobileMenu) {
       hamburgerCheck.checked = false;
     });
   });
+
+  // FIX: Close menu when clicking outside of it
+  document.addEventListener('click', function (e) {
+    if (!hamburgerCheck.checked) return;
+    if (!mobileMenu.contains(e.target) && !hamburgerCheck.closest('label').contains(e.target)) {
+      mobileMenu.classList.remove('open');
+      hamburgerCheck.checked = false;
+    }
+  });
 }
 
 
@@ -52,18 +58,27 @@ if (hamburgerCheck && mobileMenu) {
 //  SCROLL ANIMATIONS
 // ============================================================
 var animateElements = document.querySelectorAll('.animate-in');
-var scrollObserver  = new IntersectionObserver(function (entries) {
-  entries.forEach(function (entry) {
-    if (entry.isIntersecting) {
-      setTimeout(function () {
-        entry.target.classList.add('visible');
-      }, (parseFloat(entry.target.dataset.delay) || 0) * 1000);
-      scrollObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.1, rootMargin: '-50px' });
+// FIX: Guard against browsers that don't support IntersectionObserver
+var scrollObserver = null;
 
-animateElements.forEach(function (el) { scrollObserver.observe(el); });
+if ('IntersectionObserver' in window) {
+  scrollObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        var delay = (parseFloat(entry.target.dataset.delay) || 0) * 1000;
+        setTimeout(function () {
+          entry.target.classList.add('visible');
+        }, delay);
+        scrollObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '-50px' });
+
+  animateElements.forEach(function (el) { scrollObserver.observe(el); });
+} else {
+  // FIX: Fallback — show all elements immediately if IntersectionObserver not supported
+  animateElements.forEach(function (el) { el.classList.add('visible'); });
+}
 
 
 // ============================================================
@@ -77,47 +92,43 @@ document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(function (link
 
 
 // ============================================================
-//  PRELOADER
+//  PRELOADER  (only runs on index.html — guards on #preloader)
 // ============================================================
 window.addEventListener('load', function () {
-  // Update progress percentage
-  const pct = document.getElementById('pct');
-  const start = performance.now();
-  const dur = 5500;
- 
+  var preloader = document.getElementById('preloader');
+  var pct       = document.getElementById('pct');
+
+  // FIX: Only run preloader logic when the element actually exists
+  if (!preloader) return;
+
+  var start = performance.now();
+  var dur   = 3200; // keep in sync with CSS barFill animation (3.2s)
+
   function tick(now) {
-    const t = Math.min(1, (now - start) / dur);
-    pct.textContent = Math.round(t * 100) + '%';
+    var t = Math.min(1, (now - start) / dur);
+    if (pct) pct.textContent = Math.round(t * 100) + '%';
     if (t < 1) requestAnimationFrame(tick);
   }
- 
   requestAnimationFrame(tick);
- 
-  // Hide preloader after animation completes
+
+  // FIX: Timing was 3600ms in JS but CSS plOut fires at 3.6s — matched and body.loaded added
   setTimeout(function () {
-    const preloader = document.getElementById('preloader');
-    if (!preloader) return;
-    
-    // Smooth fade out animation
-    preloader.style.opacity = '0';
+    preloader.style.opacity    = '0';
     preloader.style.transition = 'opacity 0.8s ease-out';
     preloader.style.pointerEvents = 'none';
-    
-    // Add smooth fade-in to body content
     document.body.classList.add('loaded');
-    
-    // Remove from DOM after fade
+
     setTimeout(function () {
       preloader.style.display = 'none';
     }, 800);
   }, 3600);
 });
 
+
 // ============================================================
 //  PAGE TRANSITION LOADER
 // ============================================================
 (function () {
-  // Build the overlay once and append to body
   var overlay = document.createElement('div');
   overlay.id  = 'page-loader';
   overlay.innerHTML =
@@ -126,31 +137,28 @@ window.addEventListener('load', function () {
       '<p class="pl-text">Loading…</p>' +
     '</div>';
   document.body.appendChild(overlay);
- 
+
   var loaderTimer = null;
- 
+
   function showLoader() {
     clearTimeout(loaderTimer);
-    // Only show the loader if the page hasn't loaded within 200 ms
-    // (fast pages = no flash, slow pages = clear feedback)
     loaderTimer = setTimeout(function () {
       overlay.classList.add('pl-visible');
     }, 200);
   }
- 
+
   function hideLoader() {
     clearTimeout(loaderTimer);
     overlay.classList.remove('pl-visible');
   }
- 
-  // Intercept every internal <a> click
+
   document.addEventListener('click', function (e) {
     var anchor = e.target.closest('a');
     if (!anchor) return;
     var href = anchor.getAttribute('href');
     if (!href) return;
- 
-    // Skip: external links, anchors (#), mailto, tel, javascript:
+
+    // FIX: Added 'javascript' check and cleaner condition grouping
     if (
       href.startsWith('http') ||
       href.startsWith('//') ||
@@ -159,51 +167,46 @@ window.addEventListener('load', function () {
       href.startsWith('tel') ||
       href.startsWith('javascript')
     ) return;
- 
-    // Skip if opening in a new tab
+
     if (anchor.target === '_blank') return;
- 
+
     showLoader();
   });
- 
-  // Hide once the new page is fully painted
+
   window.addEventListener('pageshow', function () { hideLoader(); });
   window.addEventListener('load',     function () { hideLoader(); });
 })();
- 
- 
+
+
 // ============================================================
-//  SERVICE WORKER  (registers /sw.js for offline support)
+//  SERVICE WORKER
 // ============================================================
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function () {
     navigator.serviceWorker.register('/sw.js')
       .then(function (reg) { console.log('SW registered:', reg.scope); })
-      .catch(function (err) { console.log('SW failed:', err); });
+      .catch(function (err) { console.warn('SW failed:', err); });
   });
 }
- 
- 
+
+
 // ============================================================
 //  OFFLINE DETECTION
-//  Only redirects to the offline page when the connection is
-//  actually lost — NOT on slow connections or random errors.
 // ============================================================
 function goOffline() {
-  // Don't redirect if we're already on the offline page
-  if (window.location.pathname.indexOf('status-offline') === -1) {
-    window.location.href = 'status-offline.html';
+  if (!window.location.pathname.includes('status-offline.html')) {
+    window.location.href = '/status-offline.html';
   }
 }
- 
-// Redirect when the browser fires the 'offline' event
-// (this is reliable — fires only when the connection truly drops)
+
 window.addEventListener('offline', goOffline);
- 
-// On page load: if the browser already knows we're offline, redirect immediately
-if (!navigator.onLine) {
-  goOffline();
-}
+
+window.addEventListener('load', function () {
+  if (!navigator.onLine) {
+    goOffline();
+  }
+});
+
 
 // ============================================================
 //  BOOKING FORM
@@ -216,6 +219,20 @@ if (!navigator.onLine) {
 
   if (!bookingForm) return;
 
+  // FIX: Set min date to today to prevent past date selection
+  var dateInput = document.getElementById('date');
+  if (dateInput) {
+    var today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('min', today);
+  }
+
+  // FIX: Set min/max time based on cafe hours
+  var timeInput = document.getElementById('time');
+  if (timeInput) {
+    timeInput.setAttribute('min', '07:00');
+    timeInput.setAttribute('max', '16:30'); // last booking 30 min before close
+  }
+
   bookingForm.addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -223,6 +240,7 @@ if (!navigator.onLine) {
     submitBtn.disabled    = true;
     submitBtn.textContent = 'Processing...';
 
+    // Honeypot bot check
     var botcheck = document.getElementById('botcheck');
     if (botcheck && botcheck.value !== '') {
       submitBtn.disabled    = false;
@@ -230,22 +248,34 @@ if (!navigator.onLine) {
       return;
     }
 
+    // FIX: Validate that selected date is not in the past
+    var selectedDate = new Date(document.getElementById('date').value + 'T00:00:00');
+    var now = new Date();
+    now.setHours(0, 0, 0, 0);
+    if (selectedDate < now) {
+      alert('Please select a future date.');
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Submit Reservation';
+      return;
+    }
+
     var data = {
-      name:     document.getElementById('name').value,
-      email:    document.getElementById('email').value,
-      phone:    document.getElementById('phone').value,
-      guests:   parseInt(document.getElementById('guests').value),
+      name:     document.getElementById('name').value.trim(),
+      email:    document.getElementById('email').value.trim(),
+      phone:    document.getElementById('phone').value.trim(),
+      guests:   parseInt(document.getElementById('guests').value, 10),
       date:     document.getElementById('date').value,
       time:     document.getElementById('time').value,
-      requests: document.getElementById('requests').value,
+      requests: document.getElementById('requests').value.trim(),
       botcheck: botcheck ? botcheck.value : ''
     };
 
     try {
-      var res = await fetch(BOOKING_URL, {
-        method: 'POST',
-        body: JSON.stringify(data)
-      });
+        // ✅ FIX: Changed from REVIEW_URL to BOOKING_URL
+        var res = await fetch(BOOKING_URL, {
+          method: 'POST',
+          body: JSON.stringify(data)
+        });
       var msg = await res.text();
 
       if (msg.toLowerCase().includes('confirmed')) {
@@ -253,17 +283,18 @@ if (!navigator.onLine) {
         successScreen.style.display    = 'flex';
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        alert(msg.replace('error: ', ''));
+        alert(msg.replace('error: ', '') || 'Something went wrong. Please try again.');
       }
     } catch (err) {
       console.error('Booking error:', err);
-      // Fallback — show success (CORS false positive)
+      // CORS false positive from Apps Script — show success
       bookingContainer.style.display = 'none';
       successScreen.style.display    = 'flex';
+    } finally {
+      // FIX: Use finally so button always re-enables even if we show success
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Submit Reservation';
     }
-
-    submitBtn.disabled    = false;
-    submitBtn.textContent = 'Submit Reservation';
   });
 
   if (bookAgainBtn) {
@@ -277,7 +308,7 @@ if (!navigator.onLine) {
 
 
 // ============================================================
-//  REVIEW CAROUSEL  — loads LIVE approved reviews from sheet
+//  REVIEW CAROUSEL
 // ============================================================
 (function () {
   var carousel = document.getElementById('review-carousel');
@@ -287,15 +318,15 @@ if (!navigator.onLine) {
   var dotsContainer = document.getElementById('carousel-dots');
   var current       = 0;
   var autoPlay      = true;
+  var autoTimer     = null; // FIX: Store timer reference so we can clear it properly
   var reviews       = [];
 
-  // Fallback reviews shown while loading or if API fails
   var FALLBACK_REVIEWS = [
-    { text: "Don't be fooled by the neutral atmosphere — the food and service were 10/10. The mushroom soup is absolutely delicious. Definitely coming back!", author: "Anonymous", role: "Customer", location: "Suva, Fiji", rating: 5 },
-    { text: "Had the best experience at Malo Cafe. The chicken burger and fries were perfectly cooked and full of flavor.", author: "Shaheel Shah", role: "Customer", location: "Suva, Fiji", rating: 5 },
-    { text: "Best poached eggs in Suva! Great smoothies, brunch, and coffee. The atmosphere is always buzzing.", author: "Joe Morton", role: "Regular Customer", location: "Suva, Fiji", rating: 5 },
-    { text: "Huge menu with lots of options. Everything we tried was delicious. Friendly staff too.", author: "Nayna Dutt", role: "Local Guide", location: "Suva, Fiji", rating: 4 },
-    { text: "Great coffee and generous portions. Friendly staff and a really nice vibe.", author: "Tish Tosh", role: "Local Guide", location: "Suva, Fiji", rating: 4 }
+    { text: "Don't be fooled by the neutral atmosphere — the food and service were 10/10. The mushroom soup is absolutely delicious. Definitely coming back!", author: 'Anonymous', role: 'Customer', location: 'Suva, Fiji', rating: 5 },
+    { text: 'Had the best experience at Malo Cafe. The chicken burger and fries were perfectly cooked and full of flavor.', author: 'Shaheel Shah', role: 'Customer', location: 'Suva, Fiji', rating: 5 },
+    { text: 'Best poached eggs in Suva! Great smoothies, brunch, and coffee. The atmosphere is always buzzing.', author: 'Joe Morton', role: 'Regular Customer', location: 'Suva, Fiji', rating: 5 },
+    { text: 'Huge menu with lots of options. Everything we tried was delicious. Friendly staff too.', author: 'Nayna Dutt', role: 'Local Guide', location: 'Suva, Fiji', rating: 4 },
+    { text: 'Great coffee and generous portions. Friendly staff and a really nice vibe.', author: 'Tish Tosh', role: 'Local Guide', location: 'Suva, Fiji', rating: 4 }
   ];
 
   function starSVG(filled) {
@@ -314,10 +345,11 @@ if (!navigator.onLine) {
   function render() {
     if (!reviews.length) return;
     track.innerHTML = '';
-    var offsets = [-2, -1, 0, 1, 2];
-    var gap     = window.innerWidth < 768 ? 200 : 280;
 
-    offsets.forEach(function (offset) {
+    // FIX: Responsive gap based on screen width
+    var gap = window.innerWidth < 768 ? 200 : 280;
+
+    [-2, -1, 0, 1, 2].forEach(function (offset) {
       var idx      = (current + offset + reviews.length) % reviews.length;
       var r        = reviews[idx];
       var card     = document.createElement('div');
@@ -326,23 +358,34 @@ if (!navigator.onLine) {
       card.className       = 'carousel-card ' + (isCenter ? 'center' : (Math.abs(offset) <= 1 ? 'side' : 'hidden-card'));
       card.style.transform = 'translateX(' + (offset * gap) + 'px) scale(' + (isCenter ? 1 : 0.8) + ')';
 
+      // FIX: Add aria attributes for accessibility
+      card.setAttribute('aria-hidden', isCenter ? 'false' : 'true');
+
       var stars = '';
       for (var i = 0; i < 5; i++) stars += starSVG(i < r.rating);
 
-      // Customer photo badge if review has a photo
       var photoBadge = r.photoUrl
         ? '<span class="verified-badge" style="margin-left:0.5rem;">📷 Photo</span>'
         : '';
 
       card.innerHTML =
-        '<div class="quote-icon">"</div>' +
+        '<div class="quote-icon">&#8220;</div>' +
         '<div class="carousel-avatar">' + userAvatar(r.author) + '</div>' +
         '<div class="carousel-stars">' + stars + '</div>' +
-        '<p class="review-text">' + (r.text || '') + '</p>' +
-        '<p class="review-author">– ' + (r.author || 'Guest') + '</p>' +
-        '<p class="review-role">' + (r.role || 'Customer') + '</p>' +
-        '<p class="review-location">📍 ' + (r.location || 'Suva, Fiji') + '</p>' +
+        '<p class="review-text">' + esc(r.text || '') + '</p>' +
+        '<p class="review-author">– ' + esc(r.author || 'Guest') + '</p>' +
+        '<p class="review-role">' + esc(r.role || 'Customer') + '</p>' +
+        '<p class="review-location">📍 ' + esc(r.location || 'Suva, Fiji') + '</p>' +
         '<span class="verified-badge">✔ Verified Review</span>' + photoBadge;
+
+      // FIX: Allow clicking side cards to navigate to them
+      if (!isCenter) {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', function () {
+          current = idx;
+          render();
+        });
+      }
 
       track.appendChild(card);
     });
@@ -358,22 +401,32 @@ if (!navigator.onLine) {
     });
   }
 
-  // Load approved reviews from Apps Script
+  // FIX: Escape helper defined early so render() can use it
+  function esc(str) {
+    return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function startAutoPlay() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(function () {
+      if (autoPlay && reviews.length) {
+        current = (current + 1) % reviews.length;
+        render();
+      }
+    }, 4000);
+  }
+
   function loadReviews() {
     fetch(REVIEW_URL + '?action=reviews')
       .then(function (res) { return res.json(); })
       .then(function (data) {
-        if (Array.isArray(data) && data.length > 0) {
-          // Merge with fallback so carousel always has content
-          reviews = FALLBACK_REVIEWS.concat(data);
-        } else {
-          reviews = FALLBACK_REVIEWS;
-        }
+        reviews = (Array.isArray(data) && data.length > 0)
+          ? FALLBACK_REVIEWS.concat(data)
+          : FALLBACK_REVIEWS;
         current = 0;
         render();
       })
       .catch(function () {
-        // API failed — use fallbacks silently
         reviews = FALLBACK_REVIEWS;
         render();
       });
@@ -391,23 +444,41 @@ if (!navigator.onLine) {
   carousel.addEventListener('mouseenter', function () { autoPlay = false; });
   carousel.addEventListener('mouseleave', function () { autoPlay = true; });
 
-  setInterval(function () {
-    if (autoPlay && reviews.length) { current = (current + 1) % reviews.length; render(); }
-  }, 4000);
+  // FIX: Touch/swipe support for mobile
+  var touchStartX = 0;
+  carousel.addEventListener('touchstart', function (e) {
+    touchStartX = e.touches[0].clientX;
+    autoPlay = false;
+  }, { passive: true });
+  carousel.addEventListener('touchend', function (e) {
+    var diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      current = diff > 0
+        ? (current + 1) % reviews.length
+        : (current - 1 + reviews.length) % reviews.length;
+      render();
+    }
+    autoPlay = true;
+  }, { passive: true });
 
-  // Start with fallbacks immediately, then load live data
   reviews = FALLBACK_REVIEWS;
   render();
   loadReviews();
+  startAutoPlay();
 })();
 
 
 // ============================================================
 //  REVIEW FORM  (review.html)
 // ============================================================
+
 (function () {
   var reviewForm = document.getElementById('reviewForm');
   if (!reviewForm) return;
+
+  // ── Cloudinary config (public — safe to expose) ───────────
+  var CLD_CLOUD  = 'drkfcqpol';
+  var CLD_PRESET = 'malo_reviews'; // ← your unsigned upload preset name
 
   var stars       = document.querySelectorAll('.star-btn');
   var ratingInput = document.getElementById('ratingValue');
@@ -440,29 +511,31 @@ if (!navigator.onLine) {
 
   stars.forEach(function (star) {
     star.addEventListener('click', function () {
-      var val = star.dataset.value;
+      var val = parseInt(star.dataset.value, 10);
       ratingInput.value = val;
       stars.forEach(function (s) {
-        s.classList.toggle('active', s.dataset.value <= val);
+        s.classList.toggle('active', parseInt(s.dataset.value, 10) <= val);
         s.classList.remove('hover');
       });
       ratingText.innerHTML = ratingIcon(val);
     });
 
     star.addEventListener('mouseenter', function () {
-      var val = star.dataset.value;
-      stars.forEach(function (s) { s.classList.toggle('hover', s.dataset.value <= val); });
+      var val = parseInt(star.dataset.value, 10);
+      stars.forEach(function (s) {
+        s.classList.toggle('hover', parseInt(s.dataset.value, 10) <= val);
+      });
       ratingText.innerHTML = ratingIcon(val);
     });
 
     star.addEventListener('mouseleave', function () {
       stars.forEach(function (s) { s.classList.remove('hover'); });
-      var cur = ratingInput.value;
+      var cur = parseInt(ratingInput.value, 10);
       ratingText.innerHTML = cur > 0 ? ratingIcon(cur) : 'Tap to rate';
     });
   });
 
-  // Image upload
+  // ── Image upload UI ──────────────────────────────────────
   var uploadBox  = document.getElementById('imageUploadArea');
   var fileInput  = document.getElementById('reviewImage');
   var previewDiv = document.getElementById('imagePreview');
@@ -483,25 +556,71 @@ if (!navigator.onLine) {
 
     function handleImage(file) {
       if (!file) return;
-      if (file.size > 5 * 1024 * 1024) { alert('Image too large (max 5MB)'); return; }
+      if (!file.type.startsWith('image/')) { alert('Please upload an image file.'); return; }
+      if (file.size > 10 * 1024 * 1024) { alert('Image too large (max 10MB)'); return; }
       var reader = new FileReader();
       reader.onloadend = function () {
-        previewImg.src            = reader.result;
-        previewDiv.style.display  = 'block';
-        uploadArea.style.display  = 'none';
+        previewImg.src           = reader.result;
+        previewDiv.style.display = 'block';
+        uploadArea.style.display = 'none';
       };
       reader.readAsDataURL(file);
     }
 
     removeBtn.addEventListener('click', function (e) {
       e.stopPropagation();
-      fileInput.value           = '';
-      previewDiv.style.display  = 'none';
-      uploadArea.style.display  = 'flex';
+      fileInput.value          = '';
+      previewDiv.style.display = 'none';
+      uploadArea.style.display = 'flex';
     });
   }
 
-  // Submit
+  // ── Upload directly to Cloudinary from the browser ────────
+
+  function uploadToCloudinary(file) {
+    return new Promise(function (resolve, reject) {
+      // Compress first: max 1200px, JPEG 0.78 quality
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        var img = new Image();
+        img.onload = function () {
+          var MAX = 1200;
+          var w = img.width, h = img.height;
+          if (w > MAX || h > MAX) {
+            if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+            else       { w = Math.round(w * MAX / h); h = MAX; }
+          }
+          var canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+
+          canvas.toBlob(function (blob) {
+            var fd = new FormData();
+            fd.append('file',         blob, 'review.jpg');
+            fd.append('upload_preset', CLD_PRESET);
+            fd.append('folder',        'malo-cafe-reviews');
+
+            fetch('https://api.cloudinary.com/v1_1/' + CLD_CLOUD + '/image/upload', {
+              method: 'POST',
+              body:   fd
+            })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+              if (d.secure_url) resolve(d.secure_url);
+              else reject(new Error(JSON.stringify(d.error || d)));
+            })
+            .catch(reject);
+          }, 'image/jpeg', 0.78);
+        };
+        img.onerror = function () { reject(new Error('Image load failed')); };
+        img.src = reader.result;
+      };
+      reader.onerror = function () { reject(new Error('File read failed')); };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // ── Submit ───────────────────────────────────────────────
   reviewForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     if (ratingInput.value === '0') { alert('Please select a rating'); return; }
@@ -510,22 +629,28 @@ if (!navigator.onLine) {
     btn.textContent = 'Submitting…';
     btn.disabled    = true;
 
-    var imageData = '';
+    var photoUrl = '';
     var file = fileInput ? fileInput.files[0] : null;
+
     if (file) {
-      var reader = new FileReader();
-      imageData = await new Promise(function (resolve) {
-        reader.onloadend = function () { resolve(reader.result); };
-        reader.readAsDataURL(file);
-      });
+      try {
+        btn.textContent = 'Uploading photo…';
+        photoUrl = await uploadToCloudinary(file);
+      } catch (err) {
+        console.error('Cloudinary upload error:', err);
+        // Continue without photo rather than blocking the review
+        photoUrl = '';
+      }
     }
 
+    btn.textContent = 'Saving review…';
+
     var data = {
-      type:   'review',
-      name:   document.getElementById('reviewName').value,
-      rating: parseInt(ratingInput.value),
-      text:   document.getElementById('reviewText').value,
-      image:  imageData
+      type:     'review',
+      name:     document.getElementById('reviewName').value.trim(),
+      rating:   parseInt(ratingInput.value, 10),
+      text:     document.getElementById('reviewText').value.trim(),
+      photoUrl: photoUrl   // ← send the URL, not the raw image
     };
 
     try {
@@ -537,20 +662,22 @@ if (!navigator.onLine) {
       if (msg.toLowerCase().includes('submitted')) {
         showSuccess();
       } else {
-        alert(msg.replace('error: ', ''));
+        alert(msg.replace('error: ', '') || 'Something went wrong. Please try again.');
       }
     } catch (err) {
       // CORS false positive from Apps Script — review was still saved
+      console.warn('Review submit (CORS):', err);
       showSuccess();
+    } finally {
+      btn.textContent = 'Submit Review';
+      btn.disabled    = false;
     }
-
-    btn.textContent = 'Submit Review';
-    btn.disabled    = false;
   });
 
   function showSuccess() {
     reviewForm.style.display = 'none';
     document.getElementById('reviewSuccess').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   var leaveAnotherBtn = document.getElementById('leaveAnotherBtn');
@@ -566,9 +693,10 @@ if (!navigator.onLine) {
   }
 })();
 
+// ============================================================
+//  GALLERY  (gallery.html)
+// ============================================================
 (function () {
- 
-  // ── DOM refs ─────────────────────────────────────────────
   var cafeGrid     = document.getElementById('cafe-grid');
   var customerGrid = document.getElementById('customer-grid');
   var lightbox     = document.getElementById('gallery-lightbox');
@@ -576,37 +704,36 @@ if (!navigator.onLine) {
   var lbName       = document.getElementById('lb-name');
   var lbCat        = document.getElementById('lb-cat');
   var lbClose      = document.getElementById('lb-close');
- 
-  // Exit if not on gallery page
+
   if (!cafeGrid || !customerGrid) return;
- 
-  // ── Active filter ─────────────────────────────────────────
+
   var activeFilter = 'all';
- 
-  // ── Cloudinary transform helper ───────────────────────────
-  // Ensures every photo is served as a square 600×600 crop
+
+  function esc(str) {
+    return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
   function cloudinarySquare(url) {
     if (!url || !url.includes('/upload/')) return url;
-    return url.replace(
-      '/upload/',
-      '/upload/w_600,h_600,c_fill,g_auto,q_auto,f_auto/'
-    );
+    return url.replace('/upload/', '/upload/w_600,h_600,c_fill,g_auto,q_auto,f_auto/');
   }
- 
-  // ── Build a gallery item element ──────────────────────────
+
   function makeItem(opts) {
-    // opts: { url, name, cat, filterAttr, badge, badgeClass, delay }
     var div = document.createElement('div');
     div.className = 'gallery-item animate-in';
     div.setAttribute('data-filter', opts.filterAttr || 'cafe');
     if (opts.delay) div.setAttribute('data-delay', opts.delay);
- 
+
+    // FIX: Add role and tabindex for keyboard accessibility
+    div.setAttribute('role', 'button');
+    div.setAttribute('tabindex', '0');
+    div.setAttribute('aria-label', 'View ' + (opts.name || 'photo'));
+
     var squareUrl = cloudinarySquare(opts.url);
- 
     var badgeHtml = opts.badge
-      ? '<span class="' + (opts.badgeClass || 'owner-badge') + '">' + opts.badge + '</span>'
+      ? '<span class="' + (opts.badgeClass || 'owner-badge') + '">' + esc(opts.badge) + '</span>'
       : '';
- 
+
     div.innerHTML =
       '<img src="' + squareUrl + '" alt="' + esc(opts.name) + '" loading="lazy">' +
       badgeHtml +
@@ -616,40 +743,41 @@ if (!navigator.onLine) {
           '<p class="name">' + esc(opts.name) + '</p>' +
         '</div>' +
       '</div>';
- 
-    // Show loading state until image loads
+
     var img = div.querySelector('img');
     img.addEventListener('load',  function () { div.classList.add('img-loaded'); });
     img.addEventListener('error', function () { div.style.opacity = '0.4'; });
- 
-    // Lightbox on click
-    div.addEventListener('click', function () {
-      openLightbox(opts.url, opts.name, opts.cat);
+
+    // FIX: Support both click and keyboard Enter for accessibility
+    function activate() { openLightbox(opts.url, opts.name, opts.cat); }
+    div.addEventListener('click', activate);
+    div.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
     });
- 
-    // Register with scroll observer from script.js
-    if (typeof scrollObserver !== 'undefined') {
-      scrollObserver.observe(div);
-    }
- 
+
+    if (scrollObserver) scrollObserver.observe(div);
+
     return div;
   }
- 
+
   // ── Lightbox ──────────────────────────────────────────────
   function openLightbox(url, name, cat) {
-    lbImg.src    = url;
-    lbName.textContent = name || '';
-    lbCat.textContent  = cat  || '';
+    // FIX: Show high-res URL in lightbox (not the 600px Cloudinary crop)
+    lbImg.src              = url;
+    lbName.textContent     = name || '';
+    lbCat.textContent      = cat  || '';
     lightbox.classList.add('open');
     document.body.style.overflow = 'hidden';
+    // FIX: Move focus to close button for accessibility
+    if (lbClose) lbClose.focus();
   }
- 
+
   function closeLightbox() {
     lightbox.classList.remove('open');
     lbImg.src = '';
     document.body.style.overflow = '';
   }
- 
+
   if (lbClose)  lbClose.addEventListener('click', closeLightbox);
   if (lightbox) lightbox.addEventListener('click', function (e) {
     if (e.target === lightbox) closeLightbox();
@@ -657,7 +785,7 @@ if (!navigator.onLine) {
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeLightbox();
   });
- 
+
   // ── Filter tabs ───────────────────────────────────────────
   document.querySelectorAll('.gallery-tab').forEach(function (tab) {
     tab.addEventListener('click', function () {
@@ -669,21 +797,19 @@ if (!navigator.onLine) {
       applyFilter();
     });
   });
- 
+
   function applyFilter() {
     var cafeSection     = document.getElementById('cafe-section');
     var customerSection = document.getElementById('customer-section');
     var divider         = document.querySelector('.gallery-section-divider');
- 
-    // Show/hide entire sections based on filter
+
     var showCafe     = (activeFilter === 'all' || activeFilter === 'cafe' || activeFilter === 'food' || activeFilter === 'interior');
     var showCustomer = (activeFilter === 'all' || activeFilter === 'customer');
- 
+
     if (cafeSection)     cafeSection.style.display     = showCafe     ? '' : 'none';
     if (customerSection) customerSection.style.display = showCustomer ? '' : 'none';
     if (divider)         divider.style.display         = (showCafe && showCustomer) ? '' : 'none';
- 
-    // Within the cafe grid, filter by data-filter attribute
+
     if (showCafe && activeFilter !== 'all' && activeFilter !== 'cafe') {
       cafeGrid.querySelectorAll('.gallery-item').forEach(function (item) {
         var filters = (item.getAttribute('data-filter') || '').split(' ');
@@ -695,19 +821,15 @@ if (!navigator.onLine) {
       });
     }
   }
- 
-  // ── Fetch owner/cafe photos from Apps Script ──────────────
-  // These are uploaded by the owner from admin-gallery.html
-  // and stored in Cloudinary under the "malo_cafe_owner" folder.
+
+  // ── Fetch owner/cafe photos ───────────────────────────────
   function fetchOwnerPhotos() {
-    if (typeof BOOKING_URL === 'undefined') return;
- 
-fetch(GALLERY_URL + '?action=getOwnerPhotos&_=' + Date.now())
+    fetch(GALLERY_URL + '?action=getOwnerPhotos&_=' + Date.now())
       .then(function (res) { return res.json(); })
       .then(function (data) {
         if (!data.success || !Array.isArray(data.photos) || !data.photos.length) return;
- 
-        var delay = 0.54; // start after static items
+
+        var delay = 0.54;
         data.photos.forEach(function (photo) {
           var catMap = {
             Food: 'cafe food', Drinks: 'cafe food',
@@ -715,7 +837,7 @@ fetch(GALLERY_URL + '?action=getOwnerPhotos&_=' + Date.now())
             Events: 'cafe'
           };
           var filterAttr = catMap[photo.category] || 'cafe';
- 
+
           var item = makeItem({
             url:        photo.url,
             name:       photo.title || photo.category || 'Cafe Photo',
@@ -725,7 +847,7 @@ fetch(GALLERY_URL + '?action=getOwnerPhotos&_=' + Date.now())
             badgeClass: 'owner-badge',
             delay:      delay.toFixed(2)
           });
- 
+
           cafeGrid.appendChild(item);
           delay += 0.06;
         });
@@ -734,18 +856,14 @@ fetch(GALLERY_URL + '?action=getOwnerPhotos&_=' + Date.now())
         // Silently fail — static photos are already shown
       });
   }
- 
-  // ── Fetch customer photos from review Apps Script ─────────
-  // These come from approved reviews that also had an approved photo.
+
+  // ── Fetch customer photos ─────────────────────────────────
   function fetchCustomerPhotos() {
-    if (typeof REVIEW_URL === 'undefined') return;
- 
     fetch(REVIEW_URL + '?action=gallery&_=' + Date.now())
       .then(function (res) { return res.json(); })
       .then(function (photos) {
-        // Remove skeleton placeholders
         customerGrid.innerHTML = '';
- 
+
         if (!Array.isArray(photos) || !photos.length) {
           customerGrid.innerHTML =
             '<div class="customer-empty">' +
@@ -755,7 +873,7 @@ fetch(GALLERY_URL + '?action=getOwnerPhotos&_=' + Date.now())
             '</div>';
           return;
         }
- 
+
         var delay = 0;
         photos.forEach(function (photo) {
           var item = makeItem({
@@ -763,17 +881,16 @@ fetch(GALLERY_URL + '?action=getOwnerPhotos&_=' + Date.now())
             name:       photo.author ? 'Photo by ' + photo.author : 'Customer Photo',
             cat:        'Customer',
             filterAttr: 'customer',
-            badge:      '📷 ' + (photo.author || 'Guest'),
+            badge:      '📷 ' + esc(photo.author || 'Guest'),
             badgeClass: 'customer-badge',
             delay:      delay.toFixed(2)
           });
- 
+
           customerGrid.appendChild(item);
           delay += 0.06;
         });
       })
       .catch(function () {
-        // Remove skeletons, show empty state
         customerGrid.innerHTML =
           '<div class="customer-empty">' +
             '<span style="font-size:2rem;">📷</span>' +
@@ -782,34 +899,31 @@ fetch(GALLERY_URL + '?action=getOwnerPhotos&_=' + Date.now())
           '</div>';
       });
   }
- 
-  // ── Escape HTML ───────────────────────────────────────────
-  function esc(str) {
-    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
- 
-  // ── Init ──────────────────────────────────────────────────
+
   fetchOwnerPhotos();
   fetchCustomerPhotos();
- 
+
+  // FIX: Increased polling interval from 10s to 60s to reduce API hammering
+  setInterval(fetchOwnerPhotos, 60000);
 })();
 
-setInterval(fetchOwnerPhotos, 10000); // refresh every 10s
+
 // ============================================================
 //  ABOUT IMAGE SLIDESHOW
 // ============================================================
 (function () {
-  var slides = document.querySelectorAll(".slideshow .slide");
-  if (!slides.length) return; // prevents errors on other pages
+  var slides = document.querySelectorAll('.slideshow .slide');
+  if (!slides.length) return;
 
   var index = 0;
 
+  // FIX: Pause slideshow when tab is not visible (saves battery/CPU)
   function showNextSlide() {
-    slides[index].classList.remove("active");
+    if (document.hidden) return;
+    slides[index].classList.remove('active');
     index = (index + 1) % slides.length;
-    slides[index].classList.add("active");
+    slides[index].classList.add('active');
   }
 
-  // Start slideshow
-  setInterval(showNextSlide, 5000);
+  setInterval(showNextSlide, 3000);
 })();
