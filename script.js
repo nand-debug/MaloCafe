@@ -227,7 +227,7 @@ if ('serviceWorker' in navigator) {
 (function () {
   function goOffline() {
     if (!window.location.pathname.includes('status-offline.html')) {
-      window.location.href = '/status-offline.html';
+      window.location.href = 'status-offline.html';
     }
   }
 
