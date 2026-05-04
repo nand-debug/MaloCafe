@@ -459,7 +459,7 @@ button { cursor: pointer; font-family: inherit; }
 /* hover state (optional but nice) */
 .home-page .navbar.scrolled .btn-book:hover {
   background: var(--cafe-brown);
-  color: rgb(0, 0, 0) !important;
+  color: rgb(255, 255, 255) ;
   border-color: var(--cafe-brown);
 }
 
@@ -467,7 +467,7 @@ button { cursor: pointer; font-family: inherit; }
 .home-page .navbar.scrolled .btn-book:hover .steam-1,
 .home-page .navbar.scrolled .btn-book:hover .steam-2,
 .home-page .navbar.scrolled .btn-book:hover .steam-3 {
-  stroke: #000;
+  stroke: #000000;
 }
 
 

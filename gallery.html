@@ -34,11 +34,11 @@
         <img src="images/nav-logo.png" alt="Malo Cafe – Home" class="logo-img">
       </a>
       <div class="nav-links">
-        <a href="/index.html">Home</a>
-        <a href="/about.html">About</a>
-        <a href="/gallery.html">Gallery</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/booking.html" class="btn-book pill-btn">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="booking.html" class="btn-book pill-btn">
           <svg class="cup-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
             <path class="steam-1" d="M7 4 Q6 2.5 7 1"/>
             <path class="steam-2" d="M10 4 Q9 2.5 10 1"/>
@@ -59,11 +59,11 @@
       </label>
     </div>
     <div class="mobile-menu">
-      <a href="/index.html">Home</a>
-      <a href="/about.html">About</a>
-      <a href="/gallery.html">Gallery</a>
-      <a href="/contact.html">Contact</a>
-      <a href="/booking.html" class="btn-book-mobile">Book a Table</a>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+      <a href="booking.html" class="btn-book-mobile">Book a Table</a>
     </div>
   </nav>
 
@@ -95,13 +95,6 @@
 
           <div class="grid-3" id="cafe-grid">
 
-            <!--
-              FIX: role="button" + tabindex="0" added in HTML so keyboard
-              users can interact before script.js enhances them.
-              FIX: All alt text corrected to accurately describe each image.
-              FIX: Filenames with spaces are percent-encoded.
-              FIX: width/height declared to help browser reserve layout space.
-            -->
             <div
               class="gallery-item animate-in"
               data-filter="cafe food"
@@ -162,7 +155,6 @@
               tabindex="0"
               aria-label="View photo: Avocado Chicken Melt"
             >
-              <!-- FIX: Percent-encoded filename; FIX: alt was "Watermelon fizz" — corrected -->
               <img src="images/avocado%20chicken%20melt.jpg" alt="Avocado chicken melt sandwich from Malo Cafe" loading="lazy" width="600" height="600">
               <div class="gallery-overlay" aria-hidden="true">
                 <div class="caption">
@@ -260,8 +252,6 @@
               </div>
             </div>
 
-            <!-- Dynamic owner photos appended here by script.js -->
-
           </div>
         </div>
 
@@ -274,10 +264,6 @@
             <span class="gl-pill gl-pill-customer">Shared by Guests</span>
           </div>
 
-          <!--
-            FIX: aria-label tells screen readers photos are loading.
-            Skeleton divs are aria-hidden so they're not announced.
-          -->
           <div
             class="grid-3"
             id="customer-grid"
@@ -293,7 +279,7 @@
           <noscript>
             <p style="text-align:center;color:var(--muted-foreground);padding:2rem 0;">
               Customer photos require JavaScript to load.
-              <a href="/review.html">Leave a review</a> to share your experience.
+              <a href="review.html">Leave a review</a> to share your experience.
             </p>
           </noscript>
 
@@ -306,14 +292,7 @@
 
 
   <!-- ============ LIGHTBOX ============ -->
-  <!--
-    FIX: hidden attribute means it's fully removed from accessibility tree
-    when closed, not just visually hidden. aria-modal tells screen readers
-    this is a modal dialog. JS removes/adds `hidden` and `aria-hidden`.
-    FIX: lb-close uses &times; and has aria-label for screen readers.
-    FIX: lb-img src omitted — JS sets it dynamically, empty src causes
-    a spurious page request in some browsers.
-  -->
+ 
   <div
     class="gallery-lightbox"
     id="gallery-lightbox"
@@ -353,11 +332,11 @@
           <h4>Quick Links</h4>
           <nav aria-label="Footer navigation">
             <div class="footer-links">
-              <a href="/index.html">Home</a>
-              <a href="/about.html">About</a>
-              <a href="/gallery.html">Gallery</a>
-              <a href="/booking.html">Book a Table</a>
-              <a href="/contact.html">Contact</a>
+              <a href="index.html">Home</a>
+              <a href="about.html">About</a>
+              <a href="gallery.html">Gallery</a>
+              <a href="booking.html">Book a Table</a>
+              <a href="contact.html">Contact</a>
             </div>
           </nav>
         </div>

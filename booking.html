@@ -34,11 +34,11 @@
         <img src="images/nav-logo.png" alt="Malo Cafe – Home" class="logo-img">
       </a>
       <div class="nav-links">
-        <a href="/index.html">Home</a>
-        <a href="/about.html">About</a>
-        <a href="/gallery.html">Gallery</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/booking.html" class="btn-book pill-btn">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="booking.html" class="btn-book pill-btn">
           <svg class="cup-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
             <path class="steam-1" d="M7 4 Q6 2.5 7 1"/>
             <path class="steam-2" d="M10 4 Q9 2.5 10 1"/>
@@ -59,11 +59,11 @@
       </label>
     </div>
     <div class="mobile-menu">
-      <a href="/index.html">Home</a>
-      <a href="/about.html">About</a>
-      <a href="/gallery.html">Gallery</a>
-      <a href="/contact.html">Contact</a>
-      <a href="/booking.html" class="btn-book-mobile">Book a Table</a>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+      <a href="booking.html" class="btn-book-mobile">Book a Table</a>
     </div>
   </nav>
 
@@ -76,7 +76,6 @@
       <div class="container" style="text-align:center;">
         <div class="animate-in">
           <h1 class="section-title" id="booking-heading">Book a Table</h1>
-          <!-- FIX: .section-subtitle replaces four inline styles -->
           <p class="section-subtitle">Reserve your spot and we&rsquo;ll have everything ready for you</p>
         </div>
       </div>
@@ -85,12 +84,6 @@
     <section class="section">
       <div class="container">
 
-        <!-- ── Success Screen ── -->
-        <!--
-          FIX: Inline layout styles replaced with a CSS class.
-          script.js sets display:'flex' to reveal this — the class
-          handles centering so it works regardless of display value.
-        -->
         <div id="success-screen" class="booking-success-wrap" style="display:none;" role="alert" aria-live="assertive">
           <div class="success-screen animate-in">
             <svg
@@ -110,18 +103,13 @@
             </svg>
             <h2>Table Request Received!</h2>
             <p>Your table request has been received. Malo Cafe will confirm shortly via phone or email.</p>
-            <!-- FIX: type="button" prevents accidental form submission -->
+          
             <button class="btn booking-again-btn" id="book-again" type="button">
               Book Another Table
             </button>
           </div>
         </div>
 
-        <!--
-          FIX: Honeypot improved — visually hidden via CSS approach
-          rather than display:none which some bots detect.
-          aria-hidden prevents screen readers finding a mystery input.
-        -->
         <input
           type="text"
           id="botcheck"
@@ -135,11 +123,7 @@
         <!-- ── Booking Form ── -->
         <div id="booking-container">
           <div class="animate-in">
-            <!--
-              FIX: novalidate disables browser-native validation popups
-              which clash with our custom JS validation in script.js.
-              The required attributes are kept for semantic value.
-            -->
+
             <form id="booking-form" class="form-wrap" novalidate>
 
               <div class="form-group">
@@ -195,12 +179,6 @@
                 >
               </div>
 
-              <!--
-                FIX: fieldset + legend groups related date/time inputs
-                semantically for screen readers.
-                FIX: min date set inline via script below so it works
-                even before script.js has fully parsed.
-              -->
               <fieldset class="form-row" style="border:none;padding:0;margin:0;">
                 <legend class="sr-only">Preferred date and time</legend>
                 <div class="form-group">
@@ -280,11 +258,11 @@
           <h4>Quick Links</h4>
           <nav aria-label="Footer navigation">
             <div class="footer-links">
-              <a href="/index.html">Home</a>
-              <a href="/about.html">About</a>
-              <a href="/gallery.html">Gallery</a>
-              <a href="/booking.html">Book a Table</a>
-              <a href="/contact.html">Contact</a>
+              <a href="index.html">Home</a>
+              <a href="about.html">About</a>
+              <a href="gallery.html">Gallery</a>
+              <a href="booking.html">Book a Table</a>
+              <a href="contact.html">Contact</a>
             </div>
           </nav>
         </div>

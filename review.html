@@ -30,15 +30,15 @@
   <!-- ============ NAVBAR ============ -->
   <nav class="navbar" role="navigation" aria-label="Main navigation">
     <div class="container">
-      <a href="/index.html" class="navbar-brand">
+      <a href="index.html" class="navbar-brand">
         <img src="images/nav-logo.png" alt="Malo Cafe – Home" class="logo-img">
       </a>
       <div class="nav-links">
-        <a href="/index.html">Home</a>
-        <a href="/about.html">About</a>
-        <a href="/gallery.html">Gallery</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/booking.html" class="btn-book pill-btn">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="booking.html" class="btn-book pill-btn">
           <svg class="cup-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
             <path class="steam-1" d="M7 4 Q6 2.5 7 1"/>
             <path class="steam-2" d="M10 4 Q9 2.5 10 1"/>
@@ -59,11 +59,11 @@
       </label>
     </div>
     <div class="mobile-menu">
-      <a href="/index.html">Home</a>
-      <a href="/about.html">About</a>
-      <a href="/gallery.html">Gallery</a>
-      <a href="/contact.html">Contact</a>
-      <a href="/booking.html" class="btn-book-mobile">Book a Table</a>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+      <a href="booking.html" class="btn-book-mobile">Book a Table</a>
     </div>
   </nav>
 
@@ -83,10 +83,6 @@
     <section class="section">
       <div class="container" style="max-width:560px;">
 
-        <!--
-          FIX: novalidate — disables browser-native validation popups
-          which clash with script.js custom validation.
-        -->
         <form id="reviewForm" class="review-form" novalidate>
 
           <!-- Full Name -->
@@ -104,13 +100,7 @@
           </div>
 
           <!-- Star Rating -->
-          <!--
-            FIX: role="group" + aria-labelledby connects the "Your Rating"
-            label to the star buttons as a group for screen readers.
-            FIX: Each star has role="radio" + aria-label + tabindex="0"
-            so keyboard users can Tab to and activate them.
-            script.js manages aria-checked state on click.
-          -->
+
           <div class="form-group">
             <div
               id="star-rating-group"
@@ -204,14 +194,7 @@
 
         </form>
 
-        <!-- ── Success State ── -->
-        <!--
-          FIX: Inline styles replaced with CSS class review-success-wrap.
-          FIX: role="alert" + aria-live="assertive" announces success
-               to screen readers immediately when it appears.
-          FIX: type="button" on leaveAnotherBtn prevents submit risk.
-          FIX: ✓ raw character replaced with proper SVG icon.
-        -->
+        
         <div
           id="reviewSuccess"
           class="review-success-wrap"
@@ -269,11 +252,11 @@
           <h4>Quick Links</h4>
           <nav aria-label="Footer navigation">
             <div class="footer-links">
-              <a href="/index.html">Home</a>
-              <a href="/about.html">About</a>
-              <a href="/gallery.html">Gallery</a>
-              <a href="/booking.html">Book a Table</a>
-              <a href="/contact.html">Contact</a>
+              <a href="index.html">Home</a>
+              <a href="about.html">About</a>
+              <a href="gallery.html">Gallery</a>
+              <a href="booking.html">Book a Table</a>
+              <a href="contact.html">Contact</a>
             </div>
           </nav>
         </div>
