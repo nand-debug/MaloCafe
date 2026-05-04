@@ -7,28 +7,28 @@
 // - Stable PWA behavior
 // ================================================
 
-var CACHE_VERSION = 'v4';
+var CACHE_VERSION = 'v3';
 var CACHE_NAME = 'malo-cafe-' + CACHE_VERSION;
 
 // Core shell files
 var SHELL_FILES = [
-  '/index.html',
-  '/about.html',
-  '/booking.html',
-  '/contact.html',
-  '/gallery.html',
-  '/review.html',
-  '/404.html',
-  '/status-offline.html',
-  '/preloader.html',
-  '/status-loading.html',
-  '/style.css',
-  '/status.css',
-  '/script.js',
-  '/status.js',
-  '/images/nav-logo.png',
-  '/images/Notfound.gif',
-  '/images/favicon_io/favicon-32x32.png'
+  'index.html',
+  'about.html',
+  'booking.html',
+  'contact.html',
+  'gallery.html',
+  'review.html',
+  '404.html',
+  'status-offline.html',
+  'preloader.html',
+  'status-loading.html',
+  'style.css',
+  'status.css',
+  'script.js',
+  'status.js',
+  'images/nav-logo.png',
+  'images/Notfound.gif',
+  'images/favicon_io/favicon-32x32.png'
 ];
 
 // ─────────────────────────────────────────────
