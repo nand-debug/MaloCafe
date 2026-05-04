@@ -1,153 +1,69 @@
 // ================================================
-// MALO CAFE — SERVICE WORKER v3 (FIXED)
-// Fixes:
-// - Response.clone() crash
-// - Double cloning issue
-// - Safer caching strategy
-// - Stable PWA behavior
+// MALO CAFE — SERVICE WORKER
+// Serves custom offline page when there's no internet
 // ================================================
 
-var CACHE_VERSION = 'v3';
-var CACHE_NAME = 'malo-cafe-' + CACHE_VERSION;
+var CACHE_NAME = 'malo-cafe-v1';
 
-// Core shell files
-var SHELL_FILES = [
-  'index.html',
-  'about.html',
-  'booking.html',
-  'contact.html',
-  'gallery.html',
-  'review.html',
-  '404.html',
-  'status-offline.html',
-  'preloader.html',
-  'status-loading.html',
-  'style.css',
-  'status.css',
-  'script.js',
-  'status.js',
-  'images/nav-logo.png',
-  'images/Notfound.gif',
-  'images/favicon_io/favicon-32x32.png'
+// Files to cache so they're available offline
+var CACHE_FILES = [
+  '/',
+  '/index.html',
+  '/status-offline.html',
+  '/style.css',
+  '/status.css',
+  '/script.js',
+  '/images/Notfound.gif',
+  '/images/nav-logo.png',
+  '/images/logo.ico'
 ];
 
-// ─────────────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────────────
-
-function isNavigationRequest(request) {
-  return request.mode === 'navigate' ||
-    (request.method === 'GET' &&
-      request.headers.get('accept') &&
-      request.headers.get('accept').includes('text/html'));
-}
-
-/**
- * SAFE cache function (ONLY ONE clone happens here)
- */
-function cacheValidResponse(request, response) {
-  if (!response || response.status !== 200 || response.type === 'error') return;
-
-  const responseToCache = response.clone();
-
-  caches.open(CACHE_NAME).then(function (cache) {
-    cache.put(request, responseToCache);
-  });
-}
-
-// ─────────────────────────────────────────────
-// INSTALL
-// ─────────────────────────────────────────────
-self.addEventListener('install', function (event) {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(function (cache) {
-        return cache.addAll(SHELL_FILES);
-      })
-      .then(function () {
-        return self.skipWaiting();
-      })
-      .catch(function (err) {
-        console.error('[SW] Install failed:', err);
-        throw err;
-      })
-  );
-});
-
-// ─────────────────────────────────────────────
-// ACTIVATE
-// ─────────────────────────────────────────────
-self.addEventListener('activate', function (event) {
-  event.waitUntil(
-    caches.keys().then(function (keys) {
-      return Promise.all(
-        keys.map(function (key) {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      );
-    }).then(function () {
-      return self.clients.claim();
+// ── Install: cache all essential files ──────────
+self.addEventListener('install', function(e) {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then(function(cache) {
+      return cache.addAll(CACHE_FILES);
     })
   );
+  self.skipWaiting();
 });
 
-// ─────────────────────────────────────────────
-// FETCH (FIXED CLONE BUG HERE)
-// ─────────────────────────────────────────────
-self.addEventListener('fetch', function (event) {
+// ── Activate: clean up old caches ───────────────
+self.addEventListener('activate', function(e) {
+  e.waitUntil(
+    caches.keys().then(function(keys) {
+      return Promise.all(
+        keys.filter(function(key) { return key !== CACHE_NAME; })
+            .map(function(key) { return caches.delete(key); })
+      );
+    })
+  );
+  self.clients.claim();
+});
 
-  if (event.request.method !== 'GET') return;
-  if (!event.request.url.startsWith(self.location.origin)) return;
+// ── Fetch: serve from cache or show offline page ─
+self.addEventListener('fetch', function(e) {
+  // Only handle GET requests for same-origin pages
+  if (e.request.method !== 'GET') return;
+  if (!e.request.url.startsWith(self.location.origin)) return;
 
-  // ───────────── HTML NAVIGATION ─────────────
-  if (isNavigationRequest(event.request)) {
-    event.respondWith(
-      fetch(event.request)
-        .then(function (response) {
-          cacheValidResponse(event.request, response); // SAFE
-          return response;
-        })
-        .catch(function () {
-          return caches.match(event.request)
-            .then(function (cached) {
-              return cached || caches.match('/status-offline.html');
-            });
-        })
-    );
-    return;
-  }
-
-  // ───────────── ASSETS (CSS/JS/IMG) ─────────────
-  event.respondWith(
-    caches.match(event.request)
-      .then(function (cached) {
-        if (cached) return cached;
-
-        return fetch(event.request)
-          .then(function (response) {
-
-            // SAFE: only ONE clone inside helper
-            cacheValidResponse(event.request, response);
-
-            return response;
-          })
-          .catch(function () {
-
-            // fallback image
-            if (event.request.destination === 'image') {
-              return new Response(
-                atob('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'),
-                { headers: { 'Content-Type': 'image/gif' } }
-              );
-            }
-
-            return new Response('', {
-              status: 503,
-              statusText: 'Service Unavailable'
-            });
-          });
+  e.respondWith(
+    fetch(e.request)
+      .then(function(response) {
+        // Request succeeded — clone and cache it
+        var copy = response.clone();
+        caches.open(CACHE_NAME).then(function(cache) {
+          cache.put(e.request, copy);
+        });
+        return response;
+      })
+      .catch(function() {
+        // No internet — serve from cache if available
+        return caches.match(e.request).then(function(cached) {
+          if (cached) return cached;
+          // Not in cache — show offline page
+          return caches.match('/status-offline.html');
+        });
       })
   );
 });
