@@ -4,6 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Page Not Found – Malo Cafe</title>
+  <meta name="description" content="The page you were looking for doesn't exist. Head back to Malo Cafe's homepage.">
+  <!-- FIX: Prevent search engines indexing the error page -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#5b3a22">
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon_io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon_io/favicon-16x16.png">
+  <link rel="manifest" href="images/favicon_io/site.webmanifest">
+
   <link rel="stylesheet" href="status.css">
 </head>
 <body>
@@ -13,20 +24,38 @@
     <div class="status-content">
 
       <figure class="status-image-wrap">
-        <img src="images/Notfound.gif" alt="404 Not Found" class="status-image" loading="lazy">
+        <img
+          src="images/Notfound.gif"
+          alt=""
+          aria-hidden="true"
+          class="status-image"
+          loading="eager"
+          fetchpriority="high"
+          width="360"
+          height="360"
+        >
       </figure>
 
       <div class="status-copy">
         <span class="status-eyebrow">404 Error</span>
         <h1 class="status-title">Page not found</h1>
         <p class="status-text">
-          Sorry, the page you're looking for doesn't exist or may have moved.
-          Head back home and we'll get you sorted.
+          Sorry, the page you&rsquo;re looking for doesn&rsquo;t exist or may have moved.
+          Head back home and we&rsquo;ll get you sorted.
         </p>
 
         <div class="status-actions">
-          <a href="/index.html" class="status-button status-button-primary">Go home</a>
-          <a href="contact.html" class="status-button status-button-secondary">Contact us</a>
+          
+          <a
+            href="/index.html"
+            class="status-button status-button-primary"
+            aria-label="Go to Malo Cafe homepage"
+          >Go home</a>
+          <a
+            href="/contact.html"
+            class="status-button status-button-secondary"
+            aria-label="Contact Malo Cafe"
+          >Contact us</a>
         </div>
       </div>
 
@@ -35,9 +64,9 @@
 </div>
 
 <script>
-  window.addEventListener('load', function () {
-    window.scrollTo(0, 0);
-  });
+'use strict';
+
+window.scrollTo(0, 0);
 </script>
 
 </body>

@@ -1,27 +1,61 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Lato:wght@300;400;700&display=swap');
 
+/* ============================================================
+   MALO CAFE — STATUS STYLESHEET
+   Used by: 404.html, status-offline.html, status-loading.html
+   Standalone — does NOT depend on style.css
+   ============================================================ */
+
+
+/* ===== ROOT VARIABLES ===== */
+
 :root {
-  --background: hsl(36, 33%, 97%);
-  --foreground: hsl(25, 20%, 16%);
-  --card: hsl(37, 36%, 95%);
-  --primary: hsl(25, 40%, 32%);
+  --background:         hsl(36, 33%, 97%);
+  --foreground:         hsl(25, 20%, 16%);
+  --card:               hsl(37, 36%, 95%);
+  --primary:            hsl(25, 40%, 32%);
+  --primary-hover:      hsl(25, 40%, 26%);   /* darkened for hover feedback */
   --primary-foreground: hsl(36, 33%, 97%);
-  --muted: hsl(35, 20%, 90%);
-  --muted-foreground: hsl(25, 10%, 45%);
-  --border: hsl(30, 15%, 85%);
-  --shadow: 0 30px 90px hsla(25, 20%, 16%, 0.12);
+  --muted:              hsl(35, 20%, 90%);
+  --muted-foreground:   hsl(25, 10%, 45%);
+  --border:             hsl(30, 15%, 85%);
+  --shadow:             0 30px 90px hsla(25, 20%, 16%, 0.12);
+
+  /* Light-only palette — prevents dark-mode browser injection */
+  color-scheme: light;
 }
 
-* { box-sizing: border-box; }
-html, body { min-height: 100%; }
+
+/* ===== RESET ===== */
+
+/* FIX: Include pseudo-elements so they also get border-box */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  /* FIX: min-height 100vh on html anchors the gradient even when
+     content is short on iOS Safari where body 100% can collapse */
+  min-height: 100vh;
+}
+
 body {
   margin: 0;
+  /* FIX: min-height 100vh prevents background gap on short pages */
+  min-height: 100vh;
   font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
   color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   background:
     radial-gradient(circle at top, hsla(38, 40%, 95%, 0.95), transparent 45%),
     linear-gradient(180deg, hsl(36, 33%, 98%), hsl(35, 25%, 93%));
+  /* Prevent gradient seam on very tall viewports */
+  background-attachment: fixed;
 }
+
+
+/* ===== LAYOUT SHELL ===== */
 
 .status-shell {
   min-height: 100vh;
@@ -30,6 +64,9 @@ body {
   padding: 24px;
 }
 
+
+/* ===== PANEL ===== */
+
 .status-panel {
   width: min(100%, 960px);
   background: hsla(37, 36%, 95%, 0.94);
@@ -37,8 +74,13 @@ body {
   border-radius: 32px;
   box-shadow: var(--shadow);
   padding: clamp(24px, 5vw, 56px);
+  /* FIX: Added -webkit- prefix for Safari < 15.4 */
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
+
+
+/* ===== CONTENT GRID ===== */
 
 .status-content {
   display: grid;
@@ -46,9 +88,10 @@ body {
   align-items: center;
 }
 
-.status-image-wrap {
-  margin: 0;
-}
+
+/* ===== IMAGE ===== */
+
+.status-image-wrap { margin: 0; }
 
 .status-image {
   width: 100%;
@@ -59,20 +102,25 @@ body {
   border: 1px solid var(--border);
   background: var(--muted);
   box-shadow: 0 20px 60px hsla(25, 20%, 16%, 0.1);
+  /* Prevent layout shift while GIF loads */
+  aspect-ratio: 1;
+  object-fit: contain;
 }
 
-.status-copy {
-  text-align: center;
-}
+
+/* ===== COPY BLOCK ===== */
+
+.status-copy { text-align: center; }
 
 .status-eyebrow {
   display: inline-block;
   margin-bottom: 12px;
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 999px;
   background: var(--muted);
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: 11px;
+  font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -82,6 +130,7 @@ body {
   font-family: 'Playfair Display', serif;
   font-size: clamp(2rem, 5vw, 4rem);
   line-height: 1.05;
+  color: var(--foreground);
 }
 
 .status-text {
@@ -92,6 +141,9 @@ body {
   line-height: 1.7;
 }
 
+
+/* ===== ACTIONS ===== */
+
 .status-actions {
   margin-top: 28px;
   display: flex;
@@ -101,26 +153,68 @@ body {
 }
 
 .status-button {
-  appearance: none;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  padding: 12px 20px;
-  font: inherit;
+  /* FIX: Explicit properties instead of `font: inherit` which resets weight */
+  font-family: 'Lato', sans-serif;
+  font-size: 0.9375rem;
   font-weight: 700;
+  line-height: 1;
+
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  /* FIX: Minimum 44px touch target for accessibility */
+  min-height: 44px;
+  padding: 10px 22px;
+
+  border: 1.5px solid transparent;
+  border-radius: 999px;
   cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+  text-decoration: none;   /* FIX: Prevent underline when used as <a> */
+  white-space: nowrap;
+
+  transition: transform 0.2s ease, opacity 0.2s ease,
+              background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-.status-button:hover { transform: translateY(-1px); }
+.status-button:hover        { transform: translateY(-1px); }
+.status-button:active       { transform: translateY(0); }
+
+/* FIX: Added accessible focus ring */
+.status-button:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* Primary — filled brown */
 .status-button-primary {
   background: var(--primary);
   color: var(--primary-foreground);
+  border-color: var(--primary);
 }
+/* FIX: Explicit hover colour — was missing, only the lift applied */
+.status-button-primary:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  color: var(--primary-foreground);
+}
+
+/* Secondary — ghost outline */
 .status-button-secondary {
   background: transparent;
   color: var(--primary);
   border-color: var(--border);
 }
+/* FIX: Added background tint on hover for visible feedback */
+.status-button-secondary:hover {
+  background: var(--muted);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+
+/* ===== WAITING DOTS (offline page) ===== */
 
 .status-dots {
   display: inline-flex;
@@ -135,21 +229,26 @@ body {
   height: 10px;
   border-radius: 999px;
   background: hsla(25, 40%, 32%, 0.25);
-  animation: pulse 1.2s infinite ease-in-out;
+  /* FIX: Renamed from `pulse` to `status-pulse` to avoid collision with style.css */
+  animation: status-pulse 1.2s infinite ease-in-out;
 }
 .status-dot:nth-child(2) { animation-delay: 0.15s; }
-.status-dot:nth-child(3) { animation-delay: 0.3s; }
+.status-dot:nth-child(3) { animation-delay: 0.30s; }
+
+@keyframes status-pulse {
+  0%, 80%, 100% { transform: scale(0.85); opacity: 0.35; }
+  40%           { transform: scale(1.1);  opacity: 1;    }
+}
 
 .status-meta {
   margin-top: 18px;
-  font-size: 0.95rem;
+  font-size: 0.9375rem;
   color: var(--muted-foreground);
+  line-height: 1.5;
 }
 
-@keyframes pulse {
-  0%, 80%, 100% { transform: scale(0.85); opacity: 0.35; }
-  40% { transform: scale(1.1); opacity: 1; }
-}
+
+/* ===== DESKTOP LAYOUT (≥ 820px) ===== */
 
 @media (min-width: 820px) {
   .status-content {
@@ -157,16 +256,34 @@ body {
     gap: 48px;
   }
 
-  .status-copy {
-    text-align: left;
-  }
-
+  .status-copy          { text-align: left; }
   .status-actions,
-  .status-dots {
-    justify-content: flex-start;
-  }
+  .status-dots          { justify-content: flex-start; }
+  .status-text          { margin-left: 0; }
+}
 
-  .status-text {
-    margin-left: 0;
+
+/* ===== REDUCED MOTION ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration:        0.01ms !important;
+    animation-iteration-count: 1      !important;
+    transition-duration:       0.01ms !important;
   }
+  /* Show dots statically instead of animating */
+  .status-dot { opacity: 0.5; transform: none; }
+}
+
+
+/* ===== PRINT ===== */
+
+@media print {
+  body           { background: white; }
+  .status-panel  { box-shadow: none; border: 1px solid #ccc; backdrop-filter: none; }
+  .status-button { display: none; }
+  .status-dots   { display: none; }
+
+  /* Print the URL next to any links */
+  a[href]::after { content: " (" attr(href) ")"; font-size: 0.75em; color: #555; }
 }

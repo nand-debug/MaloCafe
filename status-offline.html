@@ -4,6 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>You're Offline – Malo Cafe</title>
+  <meta name="description" content="You appear to be offline. Check your connection and we'll take you back to Malo Cafe.">
+  <!-- Prevent search engines indexing this utility page -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#5b3a22">
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon_io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon_io/favicon-16x16.png">
+  <link rel="manifest" href="images/favicon_io/site.webmanifest">
+
   <link rel="stylesheet" href="status.css">
 </head>
 <body>
@@ -13,7 +24,19 @@
     <div class="status-content">
 
       <figure class="status-image-wrap">
-        <img src="images/Notfound.gif" alt="Offline illustration" class="status-image" loading="lazy">
+        <!--
+          FIX: loading="eager" + fetchpriority="high" — this is the primary
+          visible element. Lazy loading would cause a blank box above the fold.
+        -->
+        <img
+          src="images/Notfound.gif"
+          alt="An illustration showing no internet connection"
+          class="status-image"
+          loading="eager"
+          fetchpriority="high"
+          width="360"
+          height="360"
+        >
       </figure>
 
       <div class="status-copy">
@@ -21,19 +44,33 @@
         <h1 class="status-title">You're offline</h1>
         <p class="status-text">
           Looks like you lost your internet connection.
-          Check your Wi-Fi or mobile data, then we'll take you right back to Malo Cafe.
+          Check your Wi-Fi or mobile data and we'll take you right back to Malo Cafe.
         </p>
 
-        <div class="status-dots" id="status-dots">
+        <!-- aria-hidden: purely decorative dots, status-meta conveys the state -->
+        <div class="status-dots" id="status-dots" aria-hidden="true">
           <div class="status-dot"></div>
           <div class="status-dot"></div>
           <div class="status-dot"></div>
         </div>
-        <p class="status-meta" id="status-meta">Waiting for connection…</p>
+
+        <!-- Live region so screen readers announce status changes -->
+        <p
+          class="status-meta"
+          id="status-meta"
+          role="status"
+          aria-live="polite"
+        >Waiting for connection&hellip;</p>
 
         <div class="status-actions">
-          <button class="status-button status-button-primary" onclick="retryNow()">Try again</button>
-          <a href="/index.html" class="status-button status-button-primary">Go home</a>
+          <!-- FIX: id used for JS listener instead of inline onclick -->
+          <button
+            id="retry-btn"
+            class="status-button status-button-primary"
+            type="button"
+          >Try again</button>
+          <!-- FIX: Secondary style — Go home is the fallback, not the primary CTA -->
+          <a href="/index.html" class="status-button status-button-secondary">Go home</a>
         </div>
       </div>
 
@@ -42,31 +79,85 @@
 </div>
 
 <script>
-  // Redirect back to home the moment connection returns
-  window.addEventListener('online', function () {
-    document.getElementById('status-meta').textContent = 'Connection restored! Redirecting…';
+'use strict';
+
+(function () {
+
+  var metaEl         = document.getElementById('status-meta');
+  var retryBtn       = document.getElementById('retry-btn');
+  var redirectPending = false;  // guard against double-redirect
+  var resetTimer     = null;    // track the "Still offline" reset timer
+
+  // ── Scroll to top ────────────────────────────────────────────
+  window.scrollTo(0, 0);
+
+  // ── Helpers ──────────────────────────────────────────────────
+
+  function setMeta(text) {
+    if (metaEl) metaEl.textContent = text;
+  }
+
+
+  function checkRealConnectivity() {
+    return fetch('/favicon.ico', {
+      method: 'HEAD',
+      cache:  'no-store'
+    })
+    .then(function (res) { return res.ok; })
+    .catch(function ()   { return false; });
+  }
+
+  function redirectHome() {
+    if (redirectPending) return;
+    redirectPending = true;
+
+    // Cancel any pending "Still offline" reset so it doesn't
+    // overwrite the "Connection restored!" message before redirect.
+    clearTimeout(resetTimer);
+
+    setMeta('Connection restored! Redirecting\u2026');
+
     setTimeout(function () {
       window.location.href = '/index.html';
     }, 800);
-  });
-
-  // Manual retry button
-  function retryNow() {
-    if (navigator.onLine) {
-      window.location.href = '/index.html';
-    } else {
-      var meta = document.getElementById('status-meta');
-      meta.textContent = 'Still offline. Please check your connection.';
-      setTimeout(function () {
-        meta.textContent = 'Waiting for connection…';
-      }, 3000);
-    }
   }
 
-  // Scroll to top on load
-  window.addEventListener('load', function () {
-    window.scrollTo(0, 0);
+  // ── Online event — fires when browser detects connectivity ───
+  // NOTE: status.js is NOT loaded on this page, so there is no
+  // duplicate listener conflict. If status.js is ever added here,
+  // remove its online handler or this message will be skipped.
+  window.addEventListener('online', function () {
+    // Confirm it's real connectivity, not just a router connection
+    checkRealConnectivity().then(function (isReal) {
+      if (isReal) {
+        redirectHome();
+      } else {
+        setMeta('Connection detected but internet unavailable. Still waiting\u2026');
+      }
+    });
   });
+
+  // ── Manual retry button ──────────────────────────────────────
+  if (retryBtn) {
+    retryBtn.addEventListener('click', function () {
+      setMeta('Checking connection\u2026');
+
+      checkRealConnectivity().then(function (isOnline) {
+        if (isOnline) {
+          redirectHome();
+        } else {
+          setMeta('Still offline. Please check your connection.');
+          // Reset message after 3 s — cancel if we go online first
+          clearTimeout(resetTimer);
+          resetTimer = setTimeout(function () {
+            if (!redirectPending) setMeta('Waiting for connection\u2026');
+          }, 3000);
+        }
+      });
+    });
+  }
+
+})();
 </script>
 
 </body>

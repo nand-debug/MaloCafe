@@ -5,60 +5,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book a Table – Malo Cafe</title>
   <meta name="description" content="Reserve your table at Malo Cafe in Suva, Fiji. Book online for a great brunch experience.">
-  <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#5b3a22">
+
+  <link rel="canonical" href="https://malocafe.com/booking.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://malocafe.com/booking.html">
+  <meta property="og:title"       content="Book a Table – Malo Cafe">
+  <meta property="og:description" content="Reserve your table at Malo Cafe in Suva, Fiji. Book online for a great brunch experience.">
+  <meta property="og:image"       content="https://malocafe.com/images/nav-logo.png">
+  <meta name="twitter:card"       content="summary_large_image">
+
+  <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon_io/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon_io/favicon-16x16.png">
-<link rel="manifest" href="images/favicon_io/site.webmanifest">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon_io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon_io/favicon-16x16.png">
+  <link rel="manifest" href="images/favicon_io/site.webmanifest">
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <nav class="navbar">
+  <!-- ============ NAVBAR ============ -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
     <div class="container">
-      <a href="index.html" class="navbar-brand">
-        <img src="images/nav-logo.png" alt="Malo Cafe Logo" class="logo-img">
+      <a href="/index.html" class="navbar-brand">
+        <img src="images/nav-logo.png" alt="Malo Cafe – Home" class="logo-img">
       </a>
       <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="contact.html">Contact</a>
-        <a href="booking.html" class="btn-book pill-btn">
-        <svg class="cup-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path class="steam-1" d="M7 4 Q6 2.5 7 1"/>
-          <path class="steam-2" d="M10 4 Q9 2.5 10 1"/>
-          <path class="steam-3" d="M13 4 Q12 2.5 13 1"/>
-          <path d="M4 6 h13 l-1.5 10 a1 1 0 0 1-1 0.9 H6.5 a1 1 0 0 1-1-0.9 Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="none"/>
-          <path d="M17 8.5 q3 0 3 2.5 t-3 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
-          <path d="M3 18 Q10.5 20 18 18" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
-        </svg>
-        Book a Table
-      </a>
+        <a href="/index.html">Home</a>
+        <a href="/about.html">About</a>
+        <a href="/gallery.html">Gallery</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/booking.html" class="btn-book pill-btn">
+          <svg class="cup-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path class="steam-1" d="M7 4 Q6 2.5 7 1"/>
+            <path class="steam-2" d="M10 4 Q9 2.5 10 1"/>
+            <path class="steam-3" d="M13 4 Q12 2.5 13 1"/>
+            <path d="M4 6 h13 l-1.5 10 a1 1 0 0 1-1 0.9 H6.5 a1 1 0 0 1-1-0.9 Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="none"/>
+            <path d="M17 8.5 q3 0 3 2.5 t-3 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+            <path d="M3 18 Q10.5 20 18 18" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+          </svg>
+          Book a Table
+        </a>
       </div>
-      <label class="hamburger" aria-label="Toggle menu">
+      <label class="hamburger" aria-label="Toggle mobile menu">
         <input type="checkbox" id="hamburger-check">
-        <svg viewBox="0 0 32 32">
+        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
           <path class="line line-top-bottom" d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"></path>
           <path class="line" d="M7 16 27 16"></path>
         </svg>
       </label>
     </div>
     <div class="mobile-menu">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="contact.html">Contact</a>
-      <a href="booking.html" class="btn-book-mobile">Book a Table</a>
+      <a href="/index.html">Home</a>
+      <a href="/about.html">About</a>
+      <a href="/gallery.html">Gallery</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/booking.html" class="btn-book-mobile">Book a Table</a>
     </div>
   </nav>
 
+
+  <!-- ============ PAGE CONTENT ============ -->
   <div class="page-header">
 
-    <section class="section section-card">
+    <!-- Page Title -->
+    <section class="section section-card" aria-labelledby="booking-heading">
       <div class="container" style="text-align:center;">
         <div class="animate-in">
-          <h1 class="section-title">Book a Table</h1>
-          <p style="color:var(--muted-foreground);max-width:32rem;margin:0 auto;font-size:1.125rem;">Reserve your spot and we'll have everything ready for you</p>
+          <h1 class="section-title" id="booking-heading">Book a Table</h1>
+          <!-- FIX: .section-subtitle replaces four inline styles -->
+          <p class="section-subtitle">Reserve your spot and we&rsquo;ll have everything ready for you</p>
         </div>
       </div>
     </section>
@@ -66,54 +85,161 @@
     <section class="section">
       <div class="container">
 
-        <!-- Success Screen -->
-        <div id="success-screen" style="display:none;padding-top:4rem;min-height:50vh;align-items:center;justify-content:center;">
+        <!-- ── Success Screen ── -->
+        <!--
+          FIX: Inline layout styles replaced with a CSS class.
+          script.js sets display:'flex' to reveal this — the class
+          handles centering so it works regardless of display value.
+        -->
+        <div id="success-screen" class="booking-success-wrap" style="display:none;" role="alert" aria-live="assertive">
           <div class="success-screen animate-in">
-            <svg class="success-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <svg
+              class="success-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
             <h2>Table Request Received!</h2>
-            <p>Your table request has been received. Malo Cafe will confirm shortly.</p>
-            <button class="btn" id="book-again" style="margin-top:2rem;">Book Another Table</button>
+            <p>Your table request has been received. Malo Cafe will confirm shortly via phone or email.</p>
+            <!-- FIX: type="button" prevents accidental form submission -->
+            <button class="btn booking-again-btn" id="book-again" type="button">
+              Book Another Table
+            </button>
           </div>
         </div>
 
-        <!-- Bot protection (hidden) -->
-        <input type="text" id="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+        <!--
+          FIX: Honeypot improved — visually hidden via CSS approach
+          rather than display:none which some bots detect.
+          aria-hidden prevents screen readers finding a mystery input.
+        -->
+        <input
+          type="text"
+          id="botcheck"
+          name="botcheck"
+          aria-hidden="true"
+          tabindex="-1"
+          autocomplete="off"
+          style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;overflow:hidden;"
+        >
 
-        <!-- Booking Form -->
+        <!-- ── Booking Form ── -->
         <div id="booking-container">
           <div class="animate-in">
-            <form id="booking-form" class="form-wrap">
+            <!--
+              FIX: novalidate disables browser-native validation popups
+              which clash with our custom JS validation in script.js.
+              The required attributes are kept for semantic value.
+            -->
+            <form id="booking-form" class="form-wrap" novalidate>
+
               <div class="form-group">
                 <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" required placeholder="Your name">
+                <!-- FIX: autocomplete helps browsers/password managers assist users -->
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  placeholder="Your name"
+                  autocomplete="name"
+                >
               </div>
+
               <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" required placeholder="your@email.com">
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  placeholder="your@email.com"
+                  autocomplete="email"
+                >
               </div>
+
               <div class="form-group">
                 <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" required placeholder="+679 XXX XXXX">
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  required
+                  placeholder="+679 XXX XXXX"
+                  autocomplete="tel"
+                >
               </div>
+
               <div class="form-group">
                 <label for="guests">Number of Guests</label>
-                <input type="number" id="guests" name="guests" min="1" max="20" required placeholder="2">
+                <input
+                  type="number"
+                  id="guests"
+                  name="guests"
+                  min="1"
+                  max="20"
+                  step="1"
+                  required
+                  placeholder="2"
+                  inputmode="numeric"
+                  autocomplete="off"
+                >
               </div>
-              <div class="form-row">
+
+              <!--
+                FIX: fieldset + legend groups related date/time inputs
+                semantically for screen readers.
+                FIX: min date set inline via script below so it works
+                even before script.js has fully parsed.
+              -->
+              <fieldset class="form-row" style="border:none;padding:0;margin:0;">
+                <legend class="sr-only">Preferred date and time</legend>
                 <div class="form-group">
                   <label for="date">Date</label>
-                  <input type="date" id="date" name="date" required>
+                  <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    required
+                    autocomplete="off"
+                  >
                 </div>
                 <div class="form-group">
                   <label for="time">Time</label>
-                  <input type="time" id="time" name="time" required>
+                  <input
+                    type="time"
+                    id="time"
+                    name="time"
+                    required
+                    min="07:00"
+                    max="16:30"
+                    autocomplete="off"
+                  >
                 </div>
-              </div>
+              </fieldset>
+
               <div class="form-group">
-                <label for="requests">Special Requests</label>
-                <textarea id="requests" name="requests" rows="3" placeholder="Any dietary needs or preferences?"></textarea>
+                <label for="requests">Special Requests <span class="label-optional">(optional)</span></label>
+                <textarea
+                  id="requests"
+                  name="requests"
+                  rows="3"
+                  placeholder="Any dietary needs, allergies, or preferences?"
+                  autocomplete="off"
+                ></textarea>
               </div>
+
               <button type="submit" class="btn btn-lg btn-full">Submit Reservation</button>
+
             </form>
           </div>
         </div>
@@ -121,58 +247,94 @@
       </div>
     </section>
 
-  </div>
+  </div><!-- /.page-header -->
 
-<footer class="footer">
+  <!-- Set date min to today before script.js runs -->
+  <script>
+  'use strict';
+  (function () {
+    var d = document.getElementById('date');
+    if (d) d.setAttribute('min', new Date().toISOString().split('T')[0]);
+  })();
+  </script>
+
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" role="contentinfo">
     <div class="container">
       <div class="footer-grid">
-        <div><div class="footer-brand">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10 2v2"/>
-            <path d="M14 2v2"/>
-            <path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/>
-            <path d="M6 2v2"/></svg><span>Malo Cafe</span></div><p>Your cozy brunch spot in the heart of Suva, Fiji.</p>
+
+        <div>
+          <div class="footer-brand">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M10 2v2"/><path d="M14 2v2"/>
+              <path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/>
+              <path d="M6 2v2"/>
+            </svg>
+            <span>Malo Cafe</span>
           </div>
-        <div>          
-          <h4>Quick Links</h4>
-          <div class="footer-links">
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="gallery.html">Gallery</a>
-            <a href="booking.html">Book a Table</a>
-            <a href="contact.html">Contact</a>
-          </div>
+          <p>Your cozy brunch spot in the heart of Suva, Fiji.</p>
         </div>
+
+        <div>
+          <h4>Quick Links</h4>
+          <nav aria-label="Footer navigation">
+            <div class="footer-links">
+              <a href="/index.html">Home</a>
+              <a href="/about.html">About</a>
+              <a href="/gallery.html">Gallery</a>
+              <a href="/booking.html">Book a Table</a>
+              <a href="/contact.html">Contact</a>
+            </div>
+          </nav>
+        </div>
+
         <div>
           <h4>Contact</h4>
           <div class="footer-contact">
             <div class="footer-contact-item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
               <span>Grantham Road, Suva, Fiji</span>
             </div>
             <div class="footer-contact-item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
-              <span>+679 795 2690</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+              <!-- FIX: Callable tel link -->
+              <a href="tel:+6797952690">+679 795 2690</a>
             </div>
-                          <div class="footer-social">
-              <a href="https://www.instagram.com/malocafefiji/" class="footer-social-btn social-instagram" aria-label="Instagram" target="_blank">
-                <div class="footer-social-fill"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-                <span class="footer-social-tooltip">Instagram</span>
+            <div class="footer-social">
+              <a
+                href="https://www.instagram.com/malocafefiji/"
+                class="footer-social-btn social-instagram"
+                aria-label="Malo Cafe on Instagram"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div class="footer-social-fill" aria-hidden="true"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                <span class="footer-social-tooltip" aria-hidden="true">Instagram</span>
               </a>
-              <a href="https://www.facebook.com/p/Malo-Cafe-Fiji-61567875821662/" class="footer-social-btn social-facebook" aria-label="Facebook" target="_blank">
-                <div class="footer-social-fill"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                <span class="footer-social-tooltip">Facebook</span>
+              <a
+                href="https://www.facebook.com/p/Malo-Cafe-Fiji-61567875821662/"
+                class="footer-social-btn social-facebook"
+                aria-label="Malo Cafe on Facebook"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div class="footer-social-fill" aria-hidden="true"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                <span class="footer-social-tooltip" aria-hidden="true">Facebook</span>
               </a>
             </div>
           </div>
         </div>
+
       </div>
-      <div class="footer-bottom"><p>&copy; 2026 Malo Cafe. All rights reserved.</p></div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Malo Cafe. All rights reserved.</p>
+      </div>
     </div>
   </footer>
-  <script src="script.js"></script>
 
+  <script src="script.js"></script>
 </body>
 </html>
